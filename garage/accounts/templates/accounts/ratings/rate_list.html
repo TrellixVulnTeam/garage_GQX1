@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Manage my Cars</h2>
+
+  <a href="" class="btn btn-primary mb-3" role="button">Add New Car</a>
+<div class="card">
+    <table class="table mb-0">
+      <thead>
+        <tr>
+          <th>mechanicname</th>
+          <th>rating</th>
+          <th>comment</th>
+          <th>pub_date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for review in review %}
+          <tr>
+             <td class="align-middle">rated{{ review.rating }} by {{review.mechanicname}}</td>
+             <td class="align-middle">{{ review.comment }}</td>
+             <td class="align-middle">{{ review.pub_date }}</td>
+             <td><a href="">{{ review.mechanicname }}</a></td>
+              <!--&lt;!&ndash;<td class="text-right">&ndash;&gt;-->
+              <!--<a href="" class="btn btn-primary">Start quiz</a>-->
+            <!--</td>-->
+          </tr>s
+        {% empty %}
+          <tr>
+            <td class="bg-light text-center font-italic" colspan="4">No quiz matching your interests right now.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+
+

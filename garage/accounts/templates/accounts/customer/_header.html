@@ -1,0 +1,16 @@
+<h2>Manage My Cars</h2>
+
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link{% if active == 'MyCars' %} active{% endif %}" href="{% url 'customer:quiz_list' %}">MyCars</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link{% if active == 'taken' %} active{% endif %}" href="{% url 'customer:vehicle_add' %}">Add Vheicle</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link{% if active == 'Car history' %} active{% endif %}" href="{% url 'customer:history_list' %}">Car history</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link{% if active == 'Rate a mechanic' %} active{% endif %}" href="{% url '..accounts:rate_list' %}">Rate a mechanic</a>
+  </li>
+</ul>
