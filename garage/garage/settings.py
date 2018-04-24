@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-
+    # 'django.contrib.sites',
     'accounts',
     #third party apps
     'crispy_forms',
@@ -85,7 +85,7 @@ WSGI_APPLICATION = 'garage.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME':'garage',
+        'NAME':'egarage',
         'USER':'postgres',
         'PASSWORD':'m@ngun@1',
     }

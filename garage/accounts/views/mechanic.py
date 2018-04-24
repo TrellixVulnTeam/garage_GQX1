@@ -2,7 +2,7 @@ from django.contrib.auth import login
 from django.views.generic import CreateView,ListView,UpdateView,DeleteView
 from django.shortcuts import redirect,render,reverse
 from django.contrib import  messages
-from ..models import User,Quiz,MechProfile
+from ..models import User,MechProfile
 from ..forms import MechanicSignUpForm
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator

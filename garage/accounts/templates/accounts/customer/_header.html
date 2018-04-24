@@ -10,7 +10,13 @@
   <li class="nav-item">
     <a class="nav-link{% if active == 'Car history' %} active{% endif %}" href="{% url 'customer:history_list' %}">Car history</a>
   </li>
+   <li class="nav-item">
+    <a class="nav-link{% if active == 'Review' %} active{% endif %}" href="{% url 'customer:add_review' mechprofile.id %}">Review add</a>
+  </li>
   <li class="nav-item">
-    <a class="nav-link{% if active == 'Rate a mechanic' %} active{% endif %}" href="{% url '..accounts:rate_list' %}">Rate a mechanic</a>
+    <a class="nav-link{% if active == 'Review' %} active{% endif %}" href="{% url 'customer:user_recommendation_list' %}">Mechanic Suggestion</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link{% if active == 'Review' %} active{% endif %}" href="{% url 'customer:mech_list' %}">Mechanic list</a>
   </li>
 </ul>

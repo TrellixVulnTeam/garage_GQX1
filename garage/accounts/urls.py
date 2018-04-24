@@ -17,6 +17,9 @@ urlpatterns = [
 
 
     url('customer/', include(([
+
+      url(r'^mech_list$', customer.mech_list, name='mech_list'),
+
     url('vehicle_delete/(?P<pk>[0-9]+)',customer.VehicleDeleteView.as_view(),name='vehicle_delete'),
     url('dashboard', customer.custdashboard, name='custdashboard'),
     url('list', customer.CustListView.as_view(), name='quiz_list'),
@@ -26,12 +29,17 @@ urlpatterns = [
     url('carhistory',customer.HistoryListView.as_view(),name='history_list'),
     url('historyupdate/(?P<pk>[0-9]+)',customer.HistoryUpdateView.as_view(),name='history_change'),
     url('historydelete/(?P<pk>[0-9]+)',customer.HistoryDeleteView.as_view(),name='history_delete'),
+
+    # url('add_review',customer.ReviewCreateView.as_view(),name='review_add'),
+    url(r'^wine/(?P<wine_id>[0-9]+)/add_review/$', customer.add_review, name='add_review'),
+    url(r'^review/user/(?P<username>\w+)/$', customer.user_review_list, name='user_review_list'),
+    url(r'^recommendation/$', customer.user_recommendation_list, name='user_recommendation_list'),
 ], 'accounts'), namespace='customer')),
 
 
     url('ratings/', include(([
-    url('add', accounts.RateCreateView.as_view(),name='rate_add'),
-    url('list',accounts.RateListView.as_view(),name='rate_list'),
+    # url('add', accounts.RateCreateView.as_view(),name='rate_add'),
+    # url('list',accounts.RateListView.as_view(),name='rate_list'),
 
 ], 'accounts'), namespace='accounts')),
 
