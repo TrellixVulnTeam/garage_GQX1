@@ -1,22 +1,43 @@
 <h2>Manage My Cars</h2>
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <!-- Brand -->
+  <a class="navbar-brand" href="#">Logo</a>
 
-<ul class="nav nav-tabs mb-3">
-  <li class="nav-item">
-    <a class="nav-link{% if active == 'MyCars' %} active{% endif %}" href="{% url 'customer:quiz_list' %}">MyCars</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link{% if active == 'taken' %} active{% endif %}" href="{% url 'customer:vehicle_add' %}">Add Vheicle</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link{% if active == 'Car history' %} active{% endif %}" href="{% url 'customer:history_list' %}">Car history</a>
-  </li>
-   <li class="nav-item">
-    <a class="nav-link{% if active == 'Review' %} active{% endif %}" href="{% url 'customer:add_review' mechprofile.id %}">Review add</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link{% if active == 'Review' %} active{% endif %}" href="{% url 'customer:user_recommendation_list' %}">Mechanic Suggestion</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link{% if active == 'Review' %} active{% endif %}" href="{% url 'customer:mech_list' %}">Mechanic list</a>
-  </li>
-</ul>
+  <!-- Links -->
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link" href="">Add Review</a>
+    </li>
+
+    <!-- Dropdown -->
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="navbardrop1" data-toggle="dropdown">
+        MyCars
+      </a>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="{% url 'customer:vehicle_add' %}">Add New Vehicle</a>
+        <a class="dropdown-item"href="{% url 'customer:vehicle_list' %}">View my Vehicles</a>
+      </div>
+    </li>
+     <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="navbardrop2" data-toggle="dropdown">
+        Repair Car
+      </a>
+      <div class="dropdown-menu">
+          <a class="dropdown-item"  href="{% url 'customer:regular_service_list' %}">Regular Service</a>
+           <a class="dropdown-item"  href="{% url 'customer:repair_list' %}">Vehicle Repair</a>
+           <a class="dropdown-item"  href="{% url 'customer:paint_list' %}">Painting/Denting</a>
+           <a class="dropdown-item"  href="{% url 'customer:paint_list' %}">Accessories</a>
+          <a class="dropdown-item"  href="{% url 'customer:paint_list' %}">Update Repair History</a>
+          <a class="dropdown-item" href="{}"> View Car history</a>
+
+      </div>
+    </li>
+     <li class="nav-item">
+      <a class="nav-link" href="{% url 'customer:user_recommendation_list' %}">Mechanic Suggestion</a>
+    </li>
+      <li class="nav-item">
+      <a class="nav-link" href="{% url 'customer:mech_list' %}">Mechanic list</a>
+    </li>
+  </ul>
+</nav>

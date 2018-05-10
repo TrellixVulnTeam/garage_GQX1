@@ -1,16 +1,20 @@
 {% extends 'base.html' %}
 
 {% block title %}
-<h2>Wine list</h2>
+
+{{mechprofile.name}}
 {% endblock %}
 
 {% block content %}
+
+{% include 'accounts/customer/_header.html' with active='MyCars' %}
 {% if mech_list %}
 <div class="row">
     {% for mech in mech_list %}
     <div class="col-xs-6 col-lg-4">
-
-        {{ mech.name }}
+             <h4><a href="{% url 'mechanic:profile_detail' mech.id %}">
+                 {{ mech.name }}
+                 <img src='{{mech.image.url}}'/>
         </a></h4>
         <h5>{{ mech.review_set.count }} reviews</h5>
         <h5>{{ mech.average_rating | floatformat }} average rating</h5>
@@ -18,6 +22,28 @@
     {% endfor %}
 </div>
 {% else %}
-    <p>No wines are available.</p>
+    <p>No mech are available.</p>
 {% endif %}
+
 {% endblock %}
+
+<!--<div class="row">-->
+    <!--{% for mechprofile in mechprofile %}-->
+    <!--<div class="col-xs-6 col-lg-4">-->
+
+     <!--<h4><a href="{% url 'mechanic:profile_detail' mechprofile.id %}">-->
+        <!--{{ mechprofile.name }}-->
+     <!--</a></h4>-->
+        <!--<h5>{{ mechprofile.review_set.count }} reviews</h5>-->
+        <!--<h5>{{ mechprofile.average_rating | floatformat }} average rating</h5>-->
+    <!--</div>-->
+    <!--{% empty %}-->
+<!--</div>-->
+
+    <!--<p>No  mechanic yet.</p>-->
+<!--{% endfor %}-->
+
+
+
+
+

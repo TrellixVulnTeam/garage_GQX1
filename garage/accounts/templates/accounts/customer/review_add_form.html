@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% load bootstrap3 %}
-
+{% load crispy_forms_tags %}
 {% block title %}
-<h2>{{ wine.name }}</h2>
-<h5>{{ wine.review_set.count }} reviews ({{ wine.average_rating | floatformat }} average rating)</h5>
+<h2>{{ mechprofile.name }}</h2>
+<h5>{{ mechprofile.review_set.count }} reviews ({{ mechprofile.average_rating | floatformat }} average rating)</h5>
 {% endblock %}
 
 {% block content %}
@@ -28,13 +28,10 @@
 <h3>Add your review</h3>
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-<form action="{% url 'customers:add_review' mechprofile.id %}" method="post" class="form">
-    {% csrf_token %}
-    {% bootstrap_form form layout='inline' %}
-    {% buttons %}
-    <button type="submit" class="btn btn-primary">
-      {% bootstrap_icon "star" %} Add
-    </button>
-    {% endbuttons %}
+<form action="{% url 'customer:add_review' mechprofile.id %}" method="post" >
+   {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-success">Save</button>
+
 </form>
 {% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+{{mechprofile.name}}
+{% endblock %}
+
+{% block content %}
+
+{% include 'accounts/customer/_header.html' with active='MyCars' %}
+
+<div class="row">
+    {% for mechprofile in mechprofile %}
+    <div class="col-xs-6 col-lg-4">
+
+     <h4><a href="{% url 'mechanic:profile_detail' mechprofile.id %}">
+        {{ mechprofile.name }}
+     </a></h4>
+        <h5>{{ mechprofile.review_set.count }} reviews</h5>
+        <h5>{{ mechprofile.average_rating | floatformat }} average rating</h5>
+    </div>
+    {% empty %}
+</div>
+
+    <p>No  mechanic yet.</p>
+{% endfor %}
+{% endblock %}
+
+

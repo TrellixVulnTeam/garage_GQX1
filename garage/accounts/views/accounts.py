@@ -4,7 +4,7 @@ from django.shortcuts import redirect,render,reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from ..models import User,Vehicle,CarHistory,Review,Cluster
+from ..models import User,Vehicle,RegularService,Review,Cluster
 
 from ..forms import CustomerSignUpForm
 from ..decorators import customer_required

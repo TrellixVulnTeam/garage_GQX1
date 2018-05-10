@@ -10,8 +10,8 @@ from django.http import HttpResponseRedirect
 from ..suggestions import update_clusters
 from ..decorators import customer_required
 from ..forms import CustomerSignUpForm,ReviewForm
-from ..models import User, Vehicle, CarHistory, Cluster, MechProfile, Review
-
+from ..models import User, Vehicle, RegularService, Cluster, MechProfile, Review,Repair,Painting
+from django.http import JsonResponse
 import datetime
 
 class CustomerSignUpView(CreateView):
@@ -30,15 +30,15 @@ class CustomerSignUpView(CreateView):
         return redirect('login')
 
 @method_decorator([login_required,customer_required], name='dispatch')
-class CustListView(ListView):
+class VehicleListView(ListView):
     model = Vehicle
     ordering = ('licenceplate',)
     context_object_name = 'vehicles'
-    template_name = 'accounts/customer/quiz_list.html'
+    template_name = 'accounts/customer/vehicle_list.html'
 
     def get_queryset(self):
         queryset = self.request.user.vehicles\
-        .select_related('owner')
+        .select_related('name')
         return queryset
 
 
@@ -48,16 +48,16 @@ class CustListView(ListView):
 class VehicleCreateView(CreateView):
     model =  Vehicle
     context_object_name = 'vehicle'
-    fields = ('car_make','car_model',)
+    fields = ('make','car_model','number_plate','fuel_type',)
     template_name = 'accounts/customer/vehicle_add_form.html'
 
 
     def form_valid(self, form):
         vehicle=form.save(commit=False)
-        vehicle.owner=self.request.user
+        vehicle.name=self.request.user
         vehicle.save()
         messages.success(self.request,"Vehicle updated with success")
-        return redirect('customer:custdashboard')
+        return redirect('customer:vehicle_list')
 
 
 def custdashboard(request):
@@ -69,13 +69,13 @@ def custdashboard(request):
 @method_decorator([login_required,customer_required],name='dispatch')
 class VehicleUpdateView(UpdateView):
     model = Vehicle
-    fields = ('car_make','car_model',)
+    fields = ('make','car_model','number_plate','fuel_type',)
     context_object_name = 'vehicles'
     template_name = 'accounts/customer/vehicle_change_form.html'
 
     def form_valid(self, form):
         vehicle=form.save(commit=False)
-        vehicle.owner=self.request.user
+        vehicle.name=self.request.user
         vehicle.save()
         messages.success(self.request,"Vehicle updated with success")
         return redirect('customer:vehicle_change', vehicle.pk)
@@ -89,7 +89,7 @@ class VehicleDeleteView(DeleteView):
     model = Vehicle
     context_object_name = 'vehicle'
     template_name = 'accounts/customer/vehicle_delete_form.html'
-    success_url = reverse_lazy('customer:quiz_list')
+    success_url = reverse_lazy('customer:vehicle_list')
 
     def delete(self, request, *args, **kwargs):
         vehicle= self.get_object()
@@ -103,71 +103,75 @@ class VehicleDeleteView(DeleteView):
 
 
 
-class HistoryCreateView(CreateView):
-    model = CarHistory
-    context_object_name = 'history'
-    fields = ('service','service_date','mechanic_name','garage_location','New_Car_Part','Part_Cost','location','repair_done','service_cost')
-    template_name = 'accounts/customer/history_add_form.html'
+class RegularServiceCreateView(CreateView):
+    model = RegularService
+    context_object_name = 'service'
+    fields = ('periodic_service','other_service',)
+    template_name = 'accounts/customer/regular_service_add_form.html'
 
 
 
     def form_valid(self, form):
-        history=form.save(commit=False)
-        history.owner=self.request.user
-        history.save()
+        service=form.save(commit=False)
+        service.name=self.request.user
+        service.save()
         messages.success(self.request,'Repair updated with success')
         return redirect('customer:custdashboard')
 
-@method_decorator([login_required,customer_required], name='dispatch')
-class HistoryListView(ListView):
-        model = CarHistory
-        context_object_name = 'history'
-        template_name = 'accounts/customer/history_list.html'
-
-
-        def get_queryset(self):
-            queryset=self.request.user.history\
-                .select_related('owner')
-            return queryset
-
 
 
 @method_decorator([login_required,customer_required], name='dispatch')
-class HistoryUpdateView(UpdateView):
-    model = CarHistory
-    context_object_name = 'history'
-    fields = ('service','service_date','mechanic_name','garage_location','New_Car_Part','Part_Cost','location','repair_done','service_cost')
-    template_name = 'accounts/customer/history_change_form.html'
+class RegularServiceListView(ListView):
+        model = RegularService
+        context_object_name = 'service'
+        template_name = 'accounts/customer/regular_service_list.html'
+
+
+        # def get_queryset(self):
+        #     queryset=self.request.user.service\
+        #         .select_related('service')
+        #     return queryset
+
+
+
+@method_decorator([login_required,customer_required], name='dispatch')
+class RegularServiceUpdateView(UpdateView):
+    model = RegularService
+    context_object_name = 'service'
+    fields = ('periodic_service','other_service',)
+    template_name = 'accounts/customer/regular_service_change_form.html'
+
 
 
     def form_valid(self,form):
-        history=form.save(commit=False)
-        history.owner=self.request.user
-        history.save()
+        service=form.save(commit=False)
+        service.name=self.request.user
+        service.save()
         messages.success(self.request,'History Update with success')
-        return redirect('customer:history_change',history.pk)
+        return redirect('customer:regular_service_change',service.pk)
 
     def get_success_url(self):
-        return reverse('customer:history_change',kwargs={'pk':self.object.pk})
+        return reverse('customer:regular_service_change',kwargs={'pk':self.object.pk})
 
 
 
 
 @method_decorator([login_required,customer_required], name='dispatch')
-class HistoryDeleteView(DeleteView):
-    model = CarHistory
-    context_object_name = 'history'
-    template_name = 'accounts/customer/history_delete_form.html'
-    success_url = reverse_lazy('customer:history_list')
+class RegularServiceDeleteView(DeleteView):
+    model = RegularService
+    context_object_name = 'service'
+    template_name = 'accounts/customer/regular_service_delete_form.html'
+    success_url = reverse_lazy('customer:regular_service_delete')
 
     def delete(self, request, *args, **kwargs):
-        history = self.get_object()
+        service = self.get_object()
         messages.success(request, 'Car repair was deleted with success!')
         return super().delete(request, *args, **kwargs)
 
-    def get_queryset(self):
-        return self.request.user.history
-@login_required
+    # def get_queryset(self):
+    #     return self.request.user.service
+
+
 def add_review(request, mechprofile_id):
     mechprofile = get_object_or_404(MechProfile, pk=mechprofile_id)
     form = ReviewForm(request.POST)
@@ -186,13 +190,15 @@ def add_review(request, mechprofile_id):
         # Always return an HttpResponseRedirect after successfully dealing
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
-        return HttpResponseRedirect(reverse('customer:mech_detail', args=(mechprofile.id,)))
+        return HttpResponseRedirect(reverse('customer:profile_detail', args=(mechprofile.id,)))
 
-    return render(request, 'customer/mechdetail', {'wine': mechprofile, 'form': form})
+    return render(request, 'accounts/mechanic/profile_detail.html', {'mechprofile': mechprofile, 'form': form})
 
 # @method_decorator([login_required,customer_required], name='dispatch')
 # class ReviewCreateView(CreateView):
 #     model = Review
+#     mechprofile = get_object_or_404(MechProfile, pk=mechprofile_id)
+#
 #     context_object_name = 'review'
 #     fields = 'mechprofile','rating','comment','user_name'
 #     template_name = 'accounts/customer/review_add_form.html'
@@ -204,19 +210,16 @@ def add_review(request, mechprofile_id):
 #         update_clusters()
 #         messages.success(self.request,"Review add successfully")
 #         return redirect('customer:custdashboard')
+#
+# def user_review_list(request, username=None):
+#     if not username:
+#         username = request.user.username
+#     latest_review_list = Review.objects.filter(user_name=username).order_by('-pub_date')
+#     context = {'latest_review_list':latest_review_list, 'username':username}
+#     return render(request, 'reviews/user_review_list.html', context)
 
-def user_review_list(request, username=None):
-    if not username:
-        username = request.user.username
-    latest_review_list = Review.objects.filter(user_name=username).order_by('-pub_date')
-    context = {'latest_review_list':latest_review_list, 'username':username}
-    return render(request, 'reviews/user_review_list.html', context)
 
 
-def mech_list(request):
-    mech_list = MechProfile.objects.order_by('-name')
-    context = {'mech_list':mech_list}
-    return render(request, 'accounts/customer/mech_list.html', context)
 
 #initially a user can request for a mechanic even before they have used the site before
 #essentially we eant to return mechanics not reviewed by the user
@@ -265,3 +268,74 @@ def user_recommendation_list(request):
         'accounts/customer/user_recommendation_list.html',
         {'username': request.user.username,'mech_list': mech_list}
     )
+
+@method_decorator([login_required,customer_required], name='dispatch')
+class VehicleRepairCreateView(CreateView):
+    model = Repair
+    context_object_name = 'repair'
+    fields = ('brake_issues','suspension_issues','steering_ride_issues','engine_issues',)
+    template_name = 'accounts/customer/repair_add_form.html'
+
+
+
+    def form_valid(self, form):
+        repair=form.save(commit=False)
+        repair.name=self.request.user
+        repair.save()
+        messages.success(self.request,'Repair updated with success')
+        return redirect('customer:custdashboard')
+
+@method_decorator([login_required,customer_required], name='dispatch')
+class VehicleRepairListView(ListView):
+        model = Repair
+        context_object_name = 'repair'
+        template_name = 'accounts/customer/repair_list.html'
+
+
+        # def get_queryset(self):
+        #     queryset=self.request.user.repair
+        #     return queryset
+
+@method_decorator([login_required,customer_required], name='dispatch')
+class PaintCreateView(CreateView):
+    model = Painting
+    context_object_name = 'paint'
+    fields = ('painting_issues','other')
+    template_name = 'accounts/customer/paint_add_form.html'
+
+
+
+    def form_valid(self, form):
+        paint=form.save(commit=False)
+        paint.name=self.request.user
+        paint.save()
+        messages.success(self.request,'Paint/Dent updated with success')
+        return redirect('customer:paint_list')
+
+
+@method_decorator([login_required,customer_required], name='dispatch')
+class PaintListView(ListView):
+        model = Painting
+        context_object_name = 'paint'
+        template_name = 'accounts/customer/paint_list.html'
+
+
+        # def get_queryset(self):
+        #     queryset=self.request.user.repair
+        #     return queryset
+# @method_decorator([login_required,customer_required], name='dispatch')
+# class MechListView(ListView):
+#     model = MechProfile
+#     # ordering = ('user_name', )
+#     context_object_name = 'mechprofile'
+#     template_name = 'accounts/customer/mech_list.html'
+#
+#     # def get_queryset(self):
+#     #     queryset = self.request.user.mechprofile\
+#     #     .select_related('name')
+#     #     return queryset
+
+def mech_list(request):
+    mech_list = MechProfile.objects.order_by('-name')
+    context = {'mech_list':mech_list}
+    return render(request, 'accounts/customer/mech_list.html', context)

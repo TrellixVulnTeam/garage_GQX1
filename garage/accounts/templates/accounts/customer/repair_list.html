@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'accounts/customer/_header.html' with active='MyCars' %}
+<h2>Car repair history</h2>
+
+  <a href="{% url 'customer:repair_add' %}" class="btn btn-primary mb-3" role="button">Add Repair</a>
+<div class="card">
+    <table class="table mb-0">
+      <thead>
+        <tr>
+           <th>id</th>
+          <th>Brake issues</th>
+          <th>Suspension Issues</th>
+          <th>Steering ride issues</th>
+          <th>Engine Issues</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        {% for repair in repair %}
+          <tr>
+            <td class="align-middle">{{ repair.id }}</td>
+            <td class="align-middle">{{ repair.brake_issues }}</td>
+            <td class="align-middle">{{repair.suspension_issues }}</td>
+            <td class="align-middle">{{repair.steering_ride_issues }} </td>
+            <td class="align-middle">{{repair.engine_issues}}</td>
+
+           <!--&lt;!&ndash;<td class="text-right">&ndash;&gt;-->
+              <!--<a href="" class="btn btn-primary">Start quiz</a>-->
+            <!--</td>-->
+          </tr>s
+        {% empty %}
+          <tr>
+            <td class="bg-light text-center font-italic" colspan="4">No quiz matching your interests right now.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

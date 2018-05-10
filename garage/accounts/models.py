@@ -11,19 +11,34 @@ class User(AbstractUser):
     is_customer = models.BooleanField(default=False)
     is_mechanic = models.BooleanField(default=False)
 
+
+class CarMake(models.Model):
+    make=models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.make
+
 class Vehicle(models.Model):
     name=models.ForeignKey(User, on_delete=models.CASCADE,related_name='vehicles')
-    car_model=models.CharField(max_length=255)
-    car_make=models.CharField(max_length=255)
+    number_plate=models.CharField(max_length=100)
+    make=models.ForeignKey(CarMake)
+    car_model=models.CharField(max_length=255,help_text="ex LandCruiser",blank=True)
+
+    fuel_choice=(
+        ('P','Petrol'),
+        ('D','Diesel'),
+    )
+
+    fuel_type=models.CharField(max_length=1,choices=fuel_choice)
 
     def __str__(self):
 
-        return self.car_make
+        return self.number_plate
 
 
 class MechProfile(models.Model):
     name=models.ForeignKey(User,on_delete=models.CASCADE,related_name='mechprofile',null=True)
-    profile_photo=models.ImageField(upload_to = 'img/',)
+    profile_photo=models.ImageField(blank=True)
     garage_name=models.CharField(max_length=255)
     desc=models.TextField(max_length=1000,help_text="write a small description about you")
 
@@ -46,26 +61,26 @@ class MechProfile(models.Model):
      return str(self.name)
 
 
-class CarHistory(models.Model):
-    name=models.ForeignKey(User,on_delete=models.CASCADE,related_name='history')
-    service_date= models.DateTimeField(null=True)
-    mechanic_name=models.CharField(max_length=20)
-    service_choice=(
-        ('P','PanelBeating'),
-        ('W','ElectricalWiring'),
-        ('E','Engine'),
-        ('Pa','Painting'),
-        ('G','GeneralMaintenance'),
-    )
-    service=MultiSelectField(choices=service_choice,max_length=5,max_choices=5)
-    garage_location=models.CharField(max_length=255,help_text='location where car has been serviced')
-    New_Car_Part=models.CharField(max_length=255,help_text='New car part replaced')
-    Part_Cost=models.IntegerField(help_text='price of car part')
-    location=models.CharField(max_length=20)
-    repair_done=models.TextField(max_length=1000,help_text='small description of repair done')
-    service_cost=models.IntegerField(help_text='total cost of repair')
-    # mechanic_phoneno=RegexValidator(phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed."))
+class RegularService(models.Model):
+   periodic_choice=(
+       ('E','Engine Oil'),
+       ('O','Oil filter'),
+       ('A','Air Filter'),
+       ('B','Breake'),
+       ('Cl','Clutch'),
+       ('C','Coolant'),
 
+   )
+
+   other_choice=(
+
+       ('B','Wheel Balancing'),
+       ('R','Wheel Rotation'),
+       ('A','Wheel Alignment'),
+   )
+
+   other_service=MultiSelectField(choices=other_choice)
+   periodic_service=MultiSelectField(choices=periodic_choice)
 
 
 
@@ -84,6 +99,9 @@ class Review(models.Model):
     comment=models.CharField(max_length=200)
     rating=models.IntegerField(choices=RATING_CHOICES)
 
+    def __str__(self):
+
+      return  str(self.mechprofile)
 
 #our cluster stores a name and a list of users
 #we leave the door open for users to belong to more than one cluster by using ManyToManyField
@@ -93,3 +111,63 @@ class Cluster(models.Model):
 
     def get_members(self):
         return "\n".join([u.username for u in self.users.all()])
+
+
+
+class Repair(models.Model):
+    brake_choices=(
+        ('P','Poor braking'),
+        ('N','Noises while braking'),
+        ('B','Brake warning light is on'),
+        ('H','Handbrake is not effective'),
+        ('M','ABS malfunction'),
+        ('S','Speed sensor issue'),
+    )
+
+    suspension_choices=(
+        ('V','Vehicle pulls to one side'),
+        ('B','Bumpy ride'),
+    )
+
+    steering_ride_choices=(
+        ('S','Steering wheel vibrates'),
+        ('B','Bumpy ride'),
+    )
+
+    engine_choices=(
+        ('E','Engine not starting'),
+        ('S','Slow Cranking'),
+        ('l','Engine check light is on'),
+        ('H','Engine is over heating'),
+        ('P','Poor vehicle pickup'),
+        ('R','Rough engine'),
+        ('F','Inspection fluid leak'),
+        ('E','Exhaust and pollution check'),
+
+    )
+    brake_issues=MultiSelectField(choices=brake_choices)
+    suspension_issues=MultiSelectField(choices=suspension_choices)
+    steering_ride_issues=MultiSelectField(choices=steering_ride_choices)
+    engine_issues=MultiSelectField(choices=engine_choices)
+
+
+class Painting(models.Model):
+    painting_choices=(
+        ('U','Undercoat Finishes'),
+        ('B','Base Coat Paints'),
+        ('A','Acyrlic lacquers'),
+        ('C','Clear Coat finishes'),
+        ('F','Full Body Painting'),
+        ('D','Dental Removals'),
+        ('R','Dry Dent removal on bumpers'),
+        ('E','Exhaust pipe welding/repair'),
+        ('W','Water leaks'),
+    )
+
+    painting_issues=MultiSelectField(choices=painting_choices)
+    other=models.TextField(max_length=3000,blank=True,help_text='other')
+
+
+class Price(models.Model):
+    price=models.DecimalField(max_digits=10,decimal_places=2)
+    date_set=models.DateTimeField(auto_now_add=True)

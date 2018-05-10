@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block javascript %}
+  <script src="{% static 'js/books.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<h2>Car repair history</h2>
+
+  <a href="{% url 'customer:regular_service_add' %}" class="btn btn-primary mb-3" role="button">New Car Service</a>
+<div class="card">
+    <table class="table mb-0">
+      <thead>
+        <tr>
+          <th>id</th>
+          <th>periodic service</th>
+          <th>other service</th>
+
+          <th>Update</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for service in service %}
+          <tr>
+            <td class="align-middle">{{service.id }} </td>
+            <td class="align-middle">{{ service.periodic_service }}</td>
+            <td class="align-middle">{{service.other_service }}</td>
+
+            <td><a href="{% url 'customer:regular_service_change' service.pk %}">Update</a></td>
+            <td><a href="{% url 'customer:regular_service_delete' service.pk %}">Delete</a></td>
+           <!--&lt;!&ndash;<td class="text-right">&ndash;&gt;-->
+              <!--<a href="" class="btn btn-primary">Start quiz</a>-->
+            <!--</td>-->
+          </tr>s
+        {% empty %}
+          <tr>
+            <td class="bg-light text-center font-italic" colspan="4">No quiz matching your interests right now.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

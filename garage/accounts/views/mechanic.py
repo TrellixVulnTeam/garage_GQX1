@@ -1,15 +1,22 @@
 from django.contrib.auth import login
-from django.views.generic import CreateView,ListView,UpdateView,DeleteView
+from django.views.generic import CreateView,ListView,UpdateView,DeleteView,DetailView
 from django.shortcuts import redirect,render,reverse
 from django.contrib import  messages
-from ..models import User,MechProfile
+from ..models import User,MechProfile,Review
 from ..forms import MechanicSignUpForm
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from ..decorators import mechanic_required
+from ..decorators import mechanic_required,customer_required
 from django.urls import reverse_lazy
+
+from ..forms import ReviewForm
+import  datetime
+from django.shortcuts import get_object_or_404, render
+from django.http import HttpResponseRedirect
+from ..suggestions import update_clusters
+
 def mechdashboard(request):
-    items = Quiz.objects.all()
+    items = MechProfile.objects.all()
     return render(request,'accounts/mechanic/mechdashboard.html',context={'items':items})
 
 
@@ -75,15 +82,56 @@ class MechanicDeleteView(DeleteView):
         return self.request.user.mechprofile
 
 
-@method_decorator([login_required,mechanic_required], name='dispatch')
+@method_decorator([login_required,customer_required], name='dispatch')
 class MechListView(ListView):
     model = MechProfile
-    ordering = ('user_name', )
+    # ordering = ('user_name', )
     context_object_name = 'mechprofile'
-    template_name = 'accounts/mechanic/profile_list.html'
+    template_name = 'accounts/mechanic/mech_list.html'
 
     def get_queryset(self):
         queryset = self.request.user.mechprofile\
-        .select_related('owner')
+        .select_related('name')
         return queryset
 
+
+
+#
+# @method_decorator([login_required,customer_required], name='dispatch')
+# class MechanicDetailView(DetailView):
+#     model = MechProfile
+#     context_object_name = 'mechprofile'
+#     template_name = 'accounts/mechanic/profile_detail.html'
+#
+#     def get_context_data(self, **kwargs):
+#         context = super(MechanicDetailView, self).get_context_data(**kwargs)
+#         context['now'] = timezone.now()
+#         return context
+
+
+def profile_detail(request,mechprofile_id):
+    mechprofile=get_object_or_404(MechProfile,pk=mechprofile_id)
+    form=ReviewForm()
+    return  render(request,'accounts/mechanic/profile_detail.html',{'mechprofile':mechprofile, 'form':form})
+
+def add_review(request, mechprofile_id):
+    mechprofile = get_object_or_404(MechProfile, pk=mechprofile_id)
+    form = ReviewForm(request.POST)
+    if form.is_valid():
+        rating = form.cleaned_data['rating']
+        comment = form.cleaned_data['comment']
+        user_name = request.user.username
+        review = Review()
+        review.mechprofile = mechprofile
+        review.user_name = user_name
+        review.rating = rating
+        review.comment = comment
+        review.pub_date = datetime.datetime.now()
+        review.save()
+        update_clusters()
+        # Always return an HttpResponseRedirect after successfully dealing
+        # with POST data. This prevents data from being posted twice if a
+        # user hits the Back button.
+        return HttpResponseRedirect(reverse('mechanic:profile_detail', args=(mechprofile.id,)))
+
+    return render(request, 'accounts/mechanic/profile_detail.html', {'mechprofile': mechprofile, 'form': form})

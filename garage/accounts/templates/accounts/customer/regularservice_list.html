@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>RegularService</h2>
+
+   <!-- BUTTON TO TRIGGER THE ACTION -->
+  <p>
+    <button type="button" class="btn btn-primary js-create-book">
+      <span class="glyphicon glyphicon-plus"></span>
+      New book
+    </button>
+  </p>
+<div class="card">
+    <table class="table mb-0">
+      <thead>
+        <tr>
+          <th>Periodic Service</th>
+          <th>Other Service</th>
+          <th>Location</th>
+          <th>service_date</th>
+          <th>Update</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for service in service %}
+          <tr>
+            <td class="align-middle">{{ history.mechanic_name }}</td>
+            <td class="align-middle">{{history.Part_Cost }}</td>
+            <td class="align-middle">{{history.location }} </td>
+            <td class="align-middle">{{history.service_date}}</td>
+            <td><a href="{% url 'customer:history_change' history.pk %}">Update</a></td>
+            <td><a href="{% url 'customer:history_delete' history.pk %}">Delete</a></td>
+           <!--&lt;!&ndash;<td class="text-right">&ndash;&gt;-->
+              <!--<a href="" class="btn btn-primary">Start quiz</a>-->
+            <!--</td>-->
+          </tr>s
+        {% empty %}
+          <tr>
+            <td class="bg-light text-center font-italic" colspan="4">No quiz matching your interests right now.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+
+<div class="modal fade" id="modal-book">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      </div>
+    </div>
+
+{% endblock %}
