@@ -2,7 +2,7 @@ from django.contrib.auth import login
 from django.views.generic import CreateView,ListView,UpdateView,DeleteView,DetailView
 from django.shortcuts import redirect,render,reverse
 from django.contrib import  messages
-from ..models import User,MechProfile,Review
+from ..models import User,MechProfile,Review,ClientRepairs
 from ..forms import MechanicSignUpForm
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -39,7 +39,7 @@ class MechanicSignUpView(CreateView):
 class ProfileCreateView(CreateView):
     model = MechProfile
     context_object_name = 'mechprofile'
-    fields = ('garage_name','county','desc','profile_photo')
+    fields = ('garage_name','county','desc','image','town','estate','dental_removal')
     template_name = 'accounts/mechanic/profile_add_form.html'
 
     def form_valid(self, form):
@@ -53,7 +53,7 @@ class ProfileCreateView(CreateView):
 @method_decorator([login_required,mechanic_required],name='dispatch')
 class MechanicUpdateView(UpdateView):
     model =  MechProfile
-    fields = ('garage_name','county','desc','profile_photo')
+    fields = ('garage_name','county','desc','image','town','estate','dental_removal')
     context_object_name = 'mechprofile'
     template_name = 'accounts/mechanic/profile_change_form.html'
 
@@ -81,8 +81,48 @@ class MechanicDeleteView(DeleteView):
     def get_queryset(self):
         return self.request.user.mechprofile
 
+@method_decorator([login_required,customer_required], name='dispatch')
+class dentlist(ListView):
+    model = MechProfile
+    context_object_name = 'dental_removal'
+    template_name = 'accounts/mechanic/dent_list.html'
+    paginate_by = 5
+
+
+    def get_queryset(self):
+        return MechProfile.objects.filter(dental_removal=True)
 
 @method_decorator([login_required,customer_required], name='dispatch')
+class interiorlist(ListView):
+    model = MechProfile
+    context_object_name = 'interior'
+    template_name = 'accounts/mechanic/interior_list.html'
+    paginate_by = 5
+
+    def get_queryset(self):
+        return MechProfile.objects.filter(interior_detailing=True)
+
+@method_decorator([login_required,customer_required], name='dispatch')
+class servicelist(ListView):
+    model = MechProfile
+    context_object_name = 'service'
+    template_name = 'accounts/mechanic/service_list.html'
+    paginate_by = 5
+
+    def get_queryset(self):
+        return MechProfile.objects.filter(general_service=True)
+
+@method_decorator([login_required,customer_required], name='dispatch')
+class carSpalist(ListView):
+    model = MechProfile
+    context_object_name = 'car_spa'
+    template_name = 'accounts/mechanic/car_spa_list.html'
+    paginate_by = 5
+
+    def get_queryset(self):
+        return MechProfile.objects.filter(car_spa=True)
+
+@method_decorator([login_required,mechanic_required], name='dispatch')
 class MechListView(ListView):
     model = MechProfile
     # ordering = ('user_name', )
@@ -94,9 +134,73 @@ class MechListView(ListView):
         .select_related('name')
         return queryset
 
+@method_decorator([login_required,mechanic_required], name='dispatch')
+class ClientListView(ListView):
+    model = ClientRepairs
+    # ordering = ('user_name', )
+    context_object_name = 'client'
+    template_name = 'accounts/mechanic/client_repair_list.html'
+
+    # def get_queryset(self):
+    #     queryset = self.request.user.client\
+    #     .select_related('name')
+    #     return queryset
+
+@method_decorator([login_required,mechanic_required], name='dispatch')
+class ClientDeleteView(DeleteView):
+    model = ClientRepairs
+    context_object_name = 'client'
+    template_name = 'accounts/mechanic/client_repair_delete_form.html'
+    success_url = reverse_lazy('mechanic:client_delete')
+
+    def delete(self, request, *args, **kwargs):
+        profile = self.get_object()
+        messages.success(request, 'The client was deleted with success!')
+        return super().delete(request, *args, **kwargs)
 
 
-#
+
+
+
+    # def get_queryset(self):
+    #     return self.request.user.client
+
+@method_decorator([login_required,mechanic_required], name='dispatch')
+class ClientCreateView(CreateView):
+    model = ClientRepairs
+    context_object_name = 'client'
+    fields = ('name','location','car_model','license_plate','phone_number','Issue')
+    template_name = 'accounts/mechanic/client_add_form.html'
+
+
+    def form_valid(self, form):
+        mechprofile=form.save(commit=False)
+        mechprofile.owner=self.request.user
+        mechprofile.save()
+        messages.success(self.request,'Profile Created with success')
+        return redirect('mechanic:client_create')
+
+
+
+
+class ClientUpdateView(UpdateView):
+    model = ClientRepairs
+    context_object_name = 'client'
+    fields = ('name','location','car_model','license_plate','phone_number','Issue')
+    template_name = 'accounts/mechanic/client_update_form.html'
+
+
+    def form_valid(self, form):
+        client=form.save(commit=False)
+        client.owner=self.request.user
+        client.save()
+        messages.success(self.request,'ClientRepair with success')
+        return redirect('mechanic:client_update')
+
+    def get_success_url(self):
+        return reverse('mechanic:client_update',kwargs={'pk':self.object.pk})
+
+
 # @method_decorator([login_required,customer_required], name='dispatch')
 # class MechanicDetailView(DetailView):
 #     model = MechProfile

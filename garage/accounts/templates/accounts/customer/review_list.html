@@ -1,10 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block title %}
+<h2>Latest reviews</h2>
+{% endblock %}
+
+{% block content %}
+{% if latest_review_list %}
+<div class="row">
+    {% for review in latest_review_list %}
+    <div class="col-xs-6 col-lg-4">
+
+        {{ review.mechprofile.name }}
+
+        <h6>Rated {{ review.rating }} of 5 by {{ review.user_name }}</a></h6>
+        <p>{{ review.comment }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>No reviews are available.</p>
+{% endif %}
+{% endblock %}

@@ -3,7 +3,7 @@ Django==1.11
 django-appconf==1.0.2
 django-avatar==4.1.0
 django-bootstrap3==9.1.0
-django-crispy-forms==1.7.2
+django-crispy--forms==1.7.2
 django-filter==1.1.0
 django-import-export==1.0.0
 django-multiselectfield==0.1.8

@@ -23,13 +23,14 @@ class Vehicle(models.Model):
     number_plate=models.CharField(max_length=100)
     make=models.ForeignKey(CarMake)
     car_model=models.CharField(max_length=255,help_text="ex LandCruiser",blank=True)
+    type=models.CharField(max_length=255,help_text="ex Car,Lorry",blank=True)
 
     fuel_choice=(
-        ('P','Petrol'),
-        ('D','Diesel'),
+        ('Petrol','Petrol'),
+        ('Diesel','Diesel'),
     )
 
-    fuel_type=models.CharField(max_length=1,choices=fuel_choice)
+    fuel_type=models.CharField(max_length=10,choices=fuel_choice)
 
     def __str__(self):
 
@@ -38,10 +39,16 @@ class Vehicle(models.Model):
 
 class MechProfile(models.Model):
     name=models.ForeignKey(User,on_delete=models.CASCADE,related_name='mechprofile',null=True)
-    profile_photo=models.ImageField(blank=True)
+    image=models.ImageField(blank=True,null=True)
     garage_name=models.CharField(max_length=255)
     desc=models.TextField(max_length=1000,help_text="write a small description about you")
+    town=models.CharField(max_length=250,help_text="ex Nairobi,Nakuru,Rongai")
+    estate=models.CharField(max_length=250,help_text="ex SouthB,Bahati")
 
+    dental_removal=models.BooleanField(blank=True)
+    car_spa=models.BooleanField(blank=True)
+    interior_detailing=models.BooleanField(blank=True)
+    general_service=models.BooleanField(blank=True)
     # user=models.OneToOneField(User,on_delete=models.CASCADE)
 
 
@@ -149,7 +156,7 @@ class Repair(models.Model):
     suspension_issues=MultiSelectField(choices=suspension_choices)
     steering_ride_issues=MultiSelectField(choices=steering_ride_choices)
     engine_issues=MultiSelectField(choices=engine_choices)
-
+    vehicle=models.ForeignKey(Vehicle)
 
 class Painting(models.Model):
     painting_choices=(
@@ -171,3 +178,26 @@ class Painting(models.Model):
 class Price(models.Model):
     price=models.DecimalField(max_digits=10,decimal_places=2)
     date_set=models.DateTimeField(auto_now_add=True)
+
+class Passenger(models.Model):
+    name = models.CharField(max_length=200)
+    sex = models.CharField(max_length=200)
+    survived = models.BooleanField(blank=True)
+    age = models.FloatField()
+    ticket_class = models.PositiveSmallIntegerField()
+    embarked = models.CharField(max_length=200)
+
+
+class ClientRepairs(models.Model):
+    name=models.CharField(max_length=200)
+    created_on=models.DateTimeField(auto_now_add=True)
+    location=models.CharField(max_length=200)
+    car_model=models.CharField(max_length=200)
+    license_plate=models.CharField(max_length=200)
+    phone_number=models.CharField(max_length=200)
+    # Charges=models.IntegerField
+    Issue=models.TextField(max_length=1000)
+
+
+    def __str__(self):
+        return str(self.license_plate)

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Manage my Cars</h2>
+
+  <a href="" class="btn btn-primary mb-3" role="button">Add New Car</a>
+<div class="card">
+    <table class="table mb-0">
+      <thead>
+        <tr>
+          <th>Client Name</th>
+          <th>Car Model</th>
+            <th>Licence plate</th>
+            <th>Phone Number</th>
+            <th>Issue</th>
+            <th>update</th>
+            <th>delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for client in client %}
+          <tr>
+
+             <td><a href="">{{ client.name }}</a></td>
+            <td>{{ client.car_model }}</a></td>
+               <td>{{ client.license_plate }}</a></td>
+               <td>{{ client.phone_number }}</a></td>
+              <td>{{ client.Issue }}</a></td>
+               <td><a href="{% url 'mechanic:client_update' client.pk %}">Update</a></td>
+               <td><a href="{% url 'mechanic:client_delete' client.pk %}">Delete</a></td>
+              <!--&lt;!&ndash;<td class="text-right">&ndash;&gt;-->
+              <!--<a href="" class="btn btn-primary">Start quiz</a>-->
+            <!--</td>-->
+          </tr>s
+        {% empty %}
+          <tr>
+            <td class="bg-light text-center font-italic" colspan="4">No matching  interests right now.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+
+

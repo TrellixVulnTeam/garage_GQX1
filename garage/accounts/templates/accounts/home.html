@@ -1,18 +1,137 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
-  <h2>Welcome to my E-garage! <span class="icon-emo-happy"></span></h2>
-  <p class="lead">
-    If you already have an account, go ahead and <a href="{% url 'login' %}">log in</a>. If you are new to E-garage, get started
-    by creating a <a href="{% url 'customer_signup' %}">customer account</a> or a <a href="{% url 'mechanic_signup' %}">mechanic account</a>.
-  </p>
-  <hr>
-  <h3>What's this about?</h3>
-  <p>
-    This Django application is an example I created to illustrate a <a href="https://simpleisbetterthancomplex.com/tutorial/2018/01/18/how-to-implement-multiple-user-types-with-django.html">blog post about how to implement multiple user types</a>.
-    In this application, users can sign up as a student or a teacher. Teachers can create quizzes and students can answer quizzes
-    based on their interests.
-  </p>
-  <p>Want to run this code locally? <a href="https://github.com/sibtc/django-multiple-user-types-example/blob/master/README.md">Read detailed instructions on how to run this project</a>.</p>
-  <p class="mb-0">Vitor Freitas<br><a href="https://twitter.com/vitorfs/">@vitorfs</a></p>
+{% include 'accounts/customer/_header.html' with active='MyCars' %}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css" />
+
+     <link href="{% static 'css/cards-gallery.css' %}" rel="stylesheet">
+ <style>
+  /* Make the image fully responsive */
+  .carousel-inner img {
+      width: 100%;
+      height: 100%;
+  }
+  </style>
+
+<!--Slider or Image-->
+<div class="jumbotron text-center" style="margin-bottom:0">
+
+   <img height="60%" width="90%" src="{% static 'img/trans12-1024x415.jpg' %}"/>
+
+</div>
+
+
+<!--Popular Services-->
+<div class="row">
+   <div class="col">
+     <div class="card">
+    <div class="card-header bg-danger">Popular Services</div>
+    <div class="card-body">
+
+      <div class="row">
+		  <td><a href="{% url 'mechanic:dent_list'%}"><span class="jss87" data-reactid="33"><img height="60%" width="60%" src="{% static 'img/car-dent.svg' %}" class="rounded"/>Dent/Scratch removal</span>
+        </a></td>
+
+         <td><a href="{% url 'mechanic:car_spa'%}"> <span class="jss87" data-reactid="33"><img class="rounded-circle" height="60%" width="60%" src="{% static 'img/complete-car-spa.svg' %}" />Complete car spa</span>
+			 </a></td>
+        <td><a href="{% url 'mechanic:interior'%}"><span class="jss87" data-reactid="33"><img height="60%" width="60%" src="{% static 'img/interior-detailing.svg' %}" />Interior Detailing</span>
+    </a></td>
+       <td><a href="{% url 'mechanic:service'%}"><span class="jss87" data-reactid="33"><img height="60%" width="60%" src="{% static 'img/general-service-car.svg' %}" />Car General Service</span>
+         </a></td>
+      </div>
+   </div>
+  </div>
+</div>
+</div>
+<div class="container" style="margin-top:30px">
+  <div class="row">
+     <section class="gallery-block cards-gallery">
+	    <div class="container">
+	        <div class="heading">
+	          <h2>Offers for you</h2>
+	        </div>
+	        <div class="row">
+	            <div class="col-md-6 col-lg-4">
+	                <div class="card border-0 transform-on-hover">
+	                	<a class="lightbox" href="../img/image1.jpg">
+	                		<img src="{% static 'img/bumper-repainting-thumb.jpg' %}" alt="Card Image" class="card-img-top" width="200" height="200">
+	                	</a>
+	                    <div class="card-body">
+	                        <h6><a href="#">Bumper Repainting</a></h6>
+	                        <p class="text-muted card-text">Valid until 31st May. 3000ksh.</p>
+	                    </div>
+	                </div>
+	            </div>
+	            <div class="col-md-6 col-lg-4">
+	                <div class="card border-0 transform-on-hover">
+						<a class="lightbox" href="../img/image2.jpg">
+		                	<img src="{% static 'img/download_1.jpg' %}" alt="Card Image" class="card-img-top" width="200" height="200">
+		                </a>
+	                    <div class="card-body">
+	                        <h6><a href="#">Oil Change</a></h6>
+	                        <p class="text-muted card-text">Lorem ipsum dolor sit amet</p>
+	                    </div>
+	                </div>
+	            </div>
+	            <div class="col-md-6 col-lg-4">
+	                <div class="card border-0 transform-on-hover">
+	                	<a class="lightbox" href="../img/image3.jpg">
+	                		<img src="{% static 'img/car-ceramic-thumb.jpg' %}" alt="Card Image" class="card-img-top" width="200" height="200">
+	                	</a>
+	                    <div class="card-body">
+	                        <h6><a href="#">Car Ceramic Coating</a></h6>
+	                        <p class="text-muted card-text">Lorem ipsum dolor sit amet</p>
+	                    </div>
+	                </div>
+	            </div>
+	            <div class="col-md-6 col-lg-4">
+	                <div class="card border-0 transform-on-hover">
+	                	<a class="lightbox" href="../img/image4.jpg">
+	                			<img src="{% static 'img/11107_16.jpg' %}" alt="Card Image" class="card-img-top" width="200" height="200">
+
+	                	</a>
+	                    <div class="card-body">
+	                        <h6><a href="#">Full Body Painting</a></h6>
+	                        <p class="text-muted card-text">Lorem ipsum dolor sit amet</p>
+	                    </div>
+	                </div>
+	            </div>
+	            <div class="col-md-6 col-lg-4">
+	                <div class="card border-0 transform-on-hover">
+	                	<a class="lightbox" href="../img/image5.jpg">
+	                			<img src="{% static 'img/740954.jpg' %}" alt="Card Image" class="card-img-top" width="200" height="200">
+
+	                	</a>
+	                    <div class="card-body">
+	                        <h6><a href="#">Engine Repair</a></h6>
+	                        <p class="text-muted card-text">Lorem ipsum dolor sit amet</p>
+	                    </div>
+	                </div>
+	            </div>
+	            <div class="col-md-6 col-lg-4">
+	                <div class="card border-0 transform-on-hover">
+	                	<a class="lightbox" href="../img/image6.jpg">
+	                		<img src="{% static 'img/AC.jpg' %}" alt="Card Image" class="card-img-top"  width="200" height="200">
+	                	</a>
+	                    <div class="card-body">
+	                        <h6><a href="#">Car AC Repair</a></h6>
+	                        <p class="text-muted card-text">Lorem ipsum dolor sit amet</p>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+    </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
+    <script>
+        baguetteBox.run('.cards-gallery', { animation: 'slideIn'});
+    </script>
+  </div>
+  </div>
+
+
+</div>
+
+
+
 {% endblock %}

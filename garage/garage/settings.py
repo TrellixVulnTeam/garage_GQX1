@@ -39,14 +39,18 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'widget_tweaks',
     # 'django.contrib.sites',
     'accounts',
     #third party apps
     'crispy_forms',
     'multiselectfield',
     'bootstrap3',
-]
+     "pinax.badges",
+    'import_export',
 
+]
+IMPORT_EXPORT_USE_TRANSACTIONS = True
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -139,7 +143,7 @@ LOGOUT_URL = 'logout'
 
 LOGIN_REDIRECT_URL = 'home'
 
-LOGOUT_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'signup'
 
 
 # Messages built-in framework
@@ -166,7 +170,7 @@ STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'staticfiles')
 
 # MEDIA_ROOT=os.path.join(os.path.dirname(BASE_DIR),'media')
 MEDIA_URL = '/media/'
-MEDIA_ROOT=os.path.join((BASE_DIR),'media')
+MEDIA_ROOT=os.path.join(os.path.dirname(BASE_DIR),'media')
 
 
 

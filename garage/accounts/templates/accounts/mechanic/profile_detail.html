@@ -8,10 +8,24 @@
 {% endblock %}
 
 {% block content %}
-{% include 'accounts/customer/_header.html' with active='MyCars' %}
-<h2>{{ mechprofile.name }}</h2>
-<h5>{{ mechprofile.review_set.count }} reviews ({{ mechprofile.average_rating | floatformat }} average rating)</h5>
+{% include 'accounts/mechanic/_header.html' with active='MyCars' %}
+<div class="row">
+    <div class="col-sm-4">
+{% if mechprofile.image %}
+         <img src='{{ mechprofile.image.url }}' class='img-responsive'  width="300px" height="100px"/>
+        {% endif %}
+<p>Description : {{mechprofile.desc}}</p>
+    </div>
+    <div class="col-sm-4">
 
+<p><h2>Mechanic Name<i class="material-icons" style="font-size:24px;color:blue">person</i> : {{ mechprofile.name }} </h2></p>
+<p><h2>Garage Name <i class="fa fa-cog" style="font-size:24px"></i> :    {{mechprofile.garage_name}}</h2> </p>
+<p><h2>Town: {{mechprofile.town}} ,    Estate: {{mechprofile.estate}} </h2></p>
+
+<h5>{{ mechprofile.review_set.count }} reviews ({{ mechprofile.average_rating | floatformat }} average rating)</h5>
+</div>
+
+    </div>
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
 <form action="{% url 'mechanic:add_review' mechprofile.id %}" method="post" >

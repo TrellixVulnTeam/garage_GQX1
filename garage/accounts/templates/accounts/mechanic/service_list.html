@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+{{mechprofile.name}}
+{% endblock %}
+{% load static %}
+{% block content %}
+
+{% include 'accounts/customer/_header.html' with active='MyCars' %}
+
+<div class="container-fluid">
+<section class="gallery-block cards-gallery">
+	    <div class="container">
+	        <div class="heading">
+	          <h2>Service Centres/Mechanics for dent removal</h2>
+	        </div>
+	        <div class="row">
+
+	            <div class="col-sm-8">
+{% for mechprofile in service %}
+	                <div class="card border-0 transform-on-hover">
+                        {% if mechprofile.image %}
+                        <div class="row">
+                             <div class="col-sm-5">
+	                	<a class="lightbox" href='{{ mechprofile.image.url }}'>
+	                		 <img class="img-fluid" src='{{ mechprofile.image.url }}'  alt="Card Image" class="card-img-top" width="200" height="100">
+	                	</a>
+                             </div>
+                            <div class="col-sm-5">
+	                    <div class="card-body">
+	                        <h6><a href="{% url 'mechanic:profile_detail' mechprofile.id %}">  {{ mechprofile.name }}</a></h6>
+	                       <h6><a href="#">{{ mechprofile.review_set.count }} reviews</a></h6>
+                           <p class="text-muted card-text">{{ mechprofile.average_rating | floatformat }} average rating.</p>
+	                    </div>
+                            </div>
+                        </div>
+                         {% endif %}
+	                </div>
+                      {% endfor %}
+	            </div>
+	            <div class="col-sm-4">
+	                <div class="card border-0 transform-on-hover">
+						<a class="lightbox" href="../img/image2.jpg">
+		                	<img src="../img/image2.jpg" alt="Card Image" class="card-img-top">
+		                </a>
+	                    <div class="card-body">
+	                        <h6><a href="#">Lorem Ipsum</a></h6>
+	                        <p class="text-muted card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna.</p>
+	                    </div>
+	                </div>
+
+	            </div>
+
+            </div>
+	    </div>
+    </section>
+
+{% if is_paginated %}
+  <ul class="pagination">
+    {% if page_obj.has_previous %}
+      <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in paginator.page_range %}
+      {% if page_obj.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+      <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+</div>
+
+{% endif %}
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
+    <script>
+        baguetteBox.run('.cards-gallery', { animation: 'slideIn'});
+    </script>
+
+{% endblock %}
+
+

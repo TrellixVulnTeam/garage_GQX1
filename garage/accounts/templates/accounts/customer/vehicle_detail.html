@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<a href="{% url 'customer:vehicle_detail' vehicle.pk %}"> {{vehicle.name }}</a>
+{% endblock %}
+
+{% block content %}
+{% include 'accounts/customer/_header.html' with active='MyCars' %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-6" style="background-color:lavender;">
+        <div class="card">
+      <div class="card-header">
+        <h2>Vehicle Details</h2>
+      </div>
+
+        <div class="card-body">
+            <p>Type :{{vehicle.type}}</p>
+            <p>Licence plate: {{vehicle.number_plate}}</p>
+            <p>Make:{{vehicle.make}}</p>
+            <p>Fuel:{{vehicle.fuel_type}}</p>
+            <p></p><p></p>
+
+           </div>
+    </div>
+    </div>
+
+    <div class="col-sm-3" style="background-color:lavender;">.col-sm-3</div>
+    <div class="col-sm-3" style="background-color:lavenderblush;">.col-sm-3</div>
+  </div>
+</div>
+
+{% endblock %}

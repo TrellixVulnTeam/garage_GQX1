@@ -17,10 +17,17 @@ from django.conf.urls import url,include
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
+from django_filters.views import FilterView
+
+from accounts.filters import VehicleFilter
+
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url('', include('accounts.urls')),
     url('accounts/', include('django.contrib.auth.urls')),
+    url(r'^search/$', FilterView.as_view(filterset_class=VehicleFilter, template_name='vehicle_list.html'), name='search'),
+
    ]
 
 if settings.DEBUG:

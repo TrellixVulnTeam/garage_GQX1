@@ -1,24 +1,10 @@
 from django.contrib.auth import login
 from django.views.generic import CreateView,ListView,UpdateView,DeleteView
 from django.shortcuts import redirect,render,reverse
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
-from ..models import User,Vehicle,RegularService,Review,Cluster
 
-from ..forms import CustomerSignUpForm
-from ..decorators import customer_required
-from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView
-from django.db.models import Avg, Count
-from django.views.generic import View
-from django.template.loader import get_template
-from ..utils import render_to_pdf #created in step 4
+from django.contrib.auth.decorators import login_required
 
-
-from django.core.files.storage import FileSystemStorage
-from django.http import HttpResponse
-from django.template.loader import render_to_string
 
 # from weasyprint import HTML
 #
@@ -39,12 +25,17 @@ class SignUpView(TemplateView):
     template_name = 'registration/signup.html'
 
 
+
+
+
+
+
 def home(request):
     if request.user.is_authenticated:
         if request.user.is_mechanic:
             return redirect('mechanic:mechdashboard')
         else:
-            return redirect('customer:custdashboard')
+            return redirect('customer:homepage')
     return render(request, 'accounts/home.html')
 
 # @method_decorator([login_required,customer_required], name='dispatch')

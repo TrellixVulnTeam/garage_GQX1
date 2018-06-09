@@ -4,14 +4,16 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.generic import CreateView, ListView, UpdateView, DeleteView
-from django.shortcuts import get_object_or_404, render
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView,DetailView
+from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from ..suggestions import update_clusters
 from ..decorators import customer_required
 from ..forms import CustomerSignUpForm,ReviewForm
 from ..models import User, Vehicle, RegularService, Cluster, MechProfile, Review,Repair,Painting
-from django.http import JsonResponse
+from django.http import HttpResponse
+from ..resources import PersonResource
+from ..filters import VehicleFilter
 import datetime
 
 class CustomerSignUpView(CreateView):
@@ -30,11 +32,20 @@ class CustomerSignUpView(CreateView):
         return redirect('login')
 
 @method_decorator([login_required,customer_required], name='dispatch')
+class VehicleDetailView(DetailView):
+    model = Vehicle
+    context_object_name = 'vehicle'
+    template_name = 'accounts/customer/vehicle_detail.html'
+
+@method_decorator([login_required,customer_required], name='dispatch')
 class VehicleListView(ListView):
     model = Vehicle
     ordering = ('licenceplate',)
     context_object_name = 'vehicles'
     template_name = 'accounts/customer/vehicle_list.html'
+    paginate_by = 10
+    queryset = Vehicle.objects.all()
+    paginate_by = 3
 
     def get_queryset(self):
         queryset = self.request.user.vehicles\
@@ -48,7 +59,7 @@ class VehicleListView(ListView):
 class VehicleCreateView(CreateView):
     model =  Vehicle
     context_object_name = 'vehicle'
-    fields = ('make','car_model','number_plate','fuel_type',)
+    fields = ('type','make','car_model','number_plate','fuel_type',)
     template_name = 'accounts/customer/vehicle_add_form.html'
 
 
@@ -63,13 +74,17 @@ class VehicleCreateView(CreateView):
 def custdashboard(request):
         items = Vehicle.objects.all()
         return render(request,'accounts/customer/custdashboard.html',context={'items':items})
+@login_required()
+def homepage(request):
+        items = Vehicle.objects.all()
+        return render(request,'accounts/home.html',context={'items':items})
 
 
 
 @method_decorator([login_required,customer_required],name='dispatch')
 class VehicleUpdateView(UpdateView):
     model = Vehicle
-    fields = ('make','car_model','number_plate','fuel_type',)
+    fields = ('type','make','car_model','number_plate','fuel_type',)
     context_object_name = 'vehicles'
     template_name = 'accounts/customer/vehicle_change_form.html'
 
@@ -273,7 +288,7 @@ def user_recommendation_list(request):
 class VehicleRepairCreateView(CreateView):
     model = Repair
     context_object_name = 'repair'
-    fields = ('brake_issues','suspension_issues','steering_ride_issues','engine_issues',)
+    fields = ('brake_issues','suspension_issues','steering_ride_issues','engine_issues','vehicle')
     template_name = 'accounts/customer/repair_add_form.html'
 
 
@@ -336,6 +351,30 @@ class PaintListView(ListView):
 #     #     return queryset
 
 def mech_list(request):
-    mech_list = MechProfile.objects.order_by('-name')
+    mech_list = MechProfile.objects.order_by('-name')\
+      .values('name') \
+        # .annotate(average_rating=Count('name', filter=Q(survived=True)),
+        #           not_verage_rating=Count('name', filter=Q(survived=False))) \
+
     context = {'mech_list':mech_list}
     return render(request, 'accounts/customer/mech_list.html', context)
+
+def user_review_list(request, username=None):
+    if not username:
+        username = request.user.username
+    latest_review_list = Review.objects.filter(user_name=username).order_by('-pub_date')
+    context = {'latest_review_list':latest_review_list, 'username':username}
+    return render(request, 'accounts/customer/user_review_list.html', context)
+
+
+def VehicleExport(request):
+    person_resource = PersonResource()
+    dataset = person_resource.export()
+    response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="persons.xls"'
+    return response
+
+def search(request):
+    user_list = Vehicle.objects.all()
+    user_filter = VehicleFilter(request.GET, queryset=user_list)
+    return render(request, 'accounts/customer/vehicle_list.html', {'filter': user_filter})
