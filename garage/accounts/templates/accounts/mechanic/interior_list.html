@@ -45,8 +45,18 @@
 		                	<img src="../img/image2.jpg" alt="Card Image" class="card-img-top">
 		                </a>
 	                    <div class="card-body">
-	                        <h6><a href="#">Lorem Ipsum</a></h6>
-	                        <p class="text-muted card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna.</p>
+
+	                        <p class="text-muted card-text">L<form method='GET' action='' class='row'>
+        <div class='col-sm-4'>
+            <div class='input-group'>
+                <input class='form-control' type='text' name='q' placeholder='Search posts' value='{{ request.GET.q }}'/>
+                <span class='input-group-btn'>
+                    <!-- <input class='btn btn-default' type='submit' value='Search' /> -->
+                    <button class='btn btn-default' type='submit'>Search <i class="fa fa-search"></i></button>
+                </span>
+            </div>
+        </div>
+</form>.</p>
 	                    </div>
 	                </div>
 

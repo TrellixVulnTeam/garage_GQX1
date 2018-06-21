@@ -26,18 +26,15 @@
         Repair Car
       </a>
       <div class="dropdown-menu">
-          <a class="dropdown-item"  href="{% url 'customer:regular_service_list' %}">Regular Service</a>
-           <a class="dropdown-item"  href="{% url 'customer:repair_list' %}">Vehicle Repair</a>
-           <a class="dropdown-item"  href="{% url 'customer:paint_list' %}">Painting/Denting</a>
-           <a class="dropdown-item"  href="{% url 'customer:paint_list' %}">Accessories</a>
-          <a class="dropdown-item"  href="{% url 'customer:paint_list' %}">Update Repair History</a>
-          <a class="dropdown-item" href="{}"> View Car history</a>
-
+           <a class="dropdown-item"  href="{% url 'customer:repair_add' %}">Add new service</a>
+           <a class="dropdown-item"  href="{% url 'customer:repair_list' %}">Service history list</a>
       </div>
     </li>
+      {% if user.is_authenticated %}
      <li class="nav-item">
-      <a class="nav-link" href="{% url 'customer:user_recommendation_list' %}">Mechanic Suggestion</a>
+      <a class="nav-link" href="{% url 'customer:user_review_list' user.username %}">Reviewed by you</a>
     </li>
+      {% endif %}
       <li class="nav-item">
       <a class="nav-link" href="{% url 'customer:mech_list' %}">Mechanic list</a>
     </li>

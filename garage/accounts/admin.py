@@ -1,9 +1,9 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import (User,Vehicle,
-                     MechProfile,RegularService,
+                     MechProfile,
                      Review,Cluster,
-                     CarMake,Repair,ClientRepairs)
+                     CarMake,ClientRepairs)
 
 
 class UserAdmin(admin.ModelAdmin):
@@ -22,17 +22,17 @@ class VehicleAdmin(admin.ModelAdmin):
 admin.site.register(Vehicle,VehicleAdmin)
 
 
-class RegularServiceAdmin(admin.ModelAdmin):
-    list_display =('periodic_service','other_service',)
-admin.site.register(RegularService,RegularServiceAdmin)
+# class RegularServiceAdmin(admin.ModelAdmin):
+#     list_display =('periodic_service','other_service',)
+# admin.site.register(RegularService,RegularServiceAdmin)
 
 class CarMakeAdmin(admin.ModelAdmin):
     list_display = ('make',)
 admin.site.register(CarMake,CarMakeAdmin)
-
-class VehicleAdmin(admin.ModelAdmin):
-    list_display = ('brake_issues','suspension_issues','steering_ride_issues','engine_issues',)
-admin.site.register(Repair,VehicleAdmin)
+#
+# class VehicleAdmin(admin.ModelAdmin):
+#     list_display = ('brake_issues','suspension_issues','steering_ride_issues','engine_issues',)
+# admin.site.register(Repair,VehicleAdmin)
 
 
 class ClientRepairAdmin(admin.ModelAdmin):

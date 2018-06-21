@@ -26,7 +26,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url('', include('accounts.urls')),
     url('accounts/', include('django.contrib.auth.urls')),
-    url(r'^search/$', FilterView.as_view(filterset_class=VehicleFilter, template_name='vehicle_list.html'), name='search'),
+    
 
    ]
 

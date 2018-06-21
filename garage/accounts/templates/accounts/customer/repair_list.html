@@ -10,29 +10,37 @@
       <thead>
         <tr>
            <th>id</th>
-          <th>Brake issues</th>
-          <th>Suspension Issues</th>
-          <th>Steering ride issues</th>
+          <th>Mechanic</th>
+          <th>Vehicle</th>
+          <th>Mileage</th>
           <th>Engine Issues</th>
-
+          <th>Part Replaced</th>
+          <th>Repair type</th>
+          <th>Date Created</th>
+          <th>Update</th>
+          <th>Delete</th>
         </tr>
       </thead>
       <tbody>
         {% for repair in repair %}
           <tr>
             <td class="align-middle">{{ repair.id }}</td>
-            <td class="align-middle">{{ repair.brake_issues }}</td>
-            <td class="align-middle">{{repair.suspension_issues }}</td>
-            <td class="align-middle">{{repair.steering_ride_issues }} </td>
-            <td class="align-middle">{{repair.engine_issues}}</td>
-
+            <td class="align-middle">{{ repair.mechanic }}</td>
+            <td class="align-middle">{{repair.vehicle }}</td>
+            <td class="align-middle">{{repair.mileage }} </td>
+            <td class="align-middle">{{repair.regular_maintenance}}</td>
+            <td class="align-middle">{{repair.replace_part}}</td>
+            <td class="align-middle">{{repair.repair_type}}</td>
+            <td class="align-middle">{{repair.date}}</td>
+            <td class="align-middle"><a href="{% url 'customer:repair_change' repair.pk %}">Update</a></td>
+            <td class="align-middle"><a href="{% url 'customer:repair_delete' repair.pk %}">Delete</a></td>
            <!--&lt;!&ndash;<td class="text-right">&ndash;&gt;-->
               <!--<a href="" class="btn btn-primary">Start quiz</a>-->
             <!--</td>-->
           </tr>s
         {% empty %}
           <tr>
-            <td class="bg-light text-center font-italic" colspan="4">No quiz matching your interests right now.</td>
+            <td class="bg-light text-center font-italic" colspan="4">No service history available.</td>
           </tr>
         {% endfor %}
       </tbody>

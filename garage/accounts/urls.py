@@ -27,29 +27,34 @@ urlpatterns = [
     url('vehicle/add',customer.VehicleCreateView.as_view(),name='vehicle_add'),
     url('vehicle/details/(?P<pk>[0-9]+)',customer.VehicleDetailView.as_view(),name='vehicle_detail'),
     url('export/vehicle', customer.VehicleExport, name='vehicle_export'),
-
-    url('regular_service/add',customer.RegularServiceCreateView.as_view(),name='regular_service_add'),
-    url('regular_service/list',customer.RegularServiceListView.as_view(),name='regular_service_list'),
-    url('regular_service/update/(?P<pk>[0-9]+)',customer.RegularServiceUpdateView.as_view(),name='regular_service_change'),
-    url('regular_service/delete/(?P<pk>[0-9]+)',customer.RegularServiceDeleteView.as_view(),name='regular_service_delete'),
-
-    #mechanic and reviews
-    # url('add_review',customer.ReviewCreateView.as_view(),name='add_review').
+    url(r'^mech_list$', customer.MechListView.as_view(), name='mech_list'),
+    url(r'^$', customer.review_list, name='review_list'),
     url(r'^review/user/(?P<username>\w+)/$', customer.user_review_list, name='user_review_list'),
     url(r'^recommendation/$', customer.user_recommendation_list, name='user_recommendation_list'),
     url(r'^mechanic_review/add/(?P<mechprofile_id>[0-9]+)/$', customer.add_review, name='add_review'),
 
-    # url('list',customer.MechListView.as_view(),name='mech_list'),
-    #vehicle repair
-    url(r'^mech_list$', customer.mech_list, name='mech_list'),
     url('vehiclerepair/add',customer.VehicleRepairCreateView.as_view(),name='repair_add'),
     url('vehiclerepair/list',customer.VehicleRepairListView.as_view(),name='repair_list'),
+    url('repair_change/update/(?P<pk>[0-9]+)',customer.VehicleUpdateView.as_view(),name='repair_change'),
+    url('repair_service/delete/(?P<pk>[0-9]+)',customer.VehicleDeleteView.as_view(),name='repair_delete'),
+    #mechanic and reviews
 
-    #painting and dents
-    url('paint_dent/add',customer.PaintCreateView.as_view(),name='paint_add'),
-    url('paint_dent/list',customer.PaintListView.as_view(),name='paint_list'),
+
+    # url('add_review',customer.ReviewCreateView.as_view(),name='add_review').
+
+    # url('list',customer.MechListView.as_view(),name='mech_list'),
+    #vehicle repair
 
 
+
+    #
+    # #painting and dents
+    # url('paint_dent/add',customer.PaintCreateView.as_view(),name='paint_add'),
+    # url('paint_dent/list',customer.PaintListView.as_view(),name='paint_list'),
+
+    # url('regular_service/add',customer.RegularServiceCreateView.as_view(),name='regular_service_add'),
+
+    # url('regular_service/update/(?P<pk>[0-9]+)',customer.RegularServiceUpdateView.as_view(),name='regular_service_change'),
 
 ], 'accounts'), namespace='customer')),
 

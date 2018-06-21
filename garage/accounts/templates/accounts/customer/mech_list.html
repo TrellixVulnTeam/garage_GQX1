@@ -7,26 +7,29 @@
 
 {% block content %}
 
-{% include 'accounts/customer/_header.html' with active='MyCars' %}
+{% include 'accounts/customer/_header.html'  %}
 <div id="container"></div>
 
-
-{% if mech_list %}
 <div class="row">
-    {% for mech in mech_list %}
+    {% for mechprofile in mechprofile %}
     <div class="col-xs-6 col-lg-4">
-             <h4><a href="">
-                 {{ mech.name }}
-                 <img src='{{mech.image.url}}'  class='img-responsive'  width="200px" height="150px"/>
-        </a></h4>
-        <h5>{{ mech.review_set.count }} reviews</h5>
-        <h5>{{ mech.average_rating | floatformat }} average rating</h5>
+
+     <h4><a href="">
+        {{ mechprofile.name }}
+     </a></h4>
+        {% if mechprofile.image %}
+         <img src='{{ mechprofile.image.url }}' class='img-responsive'  width="50px" height="50px"/>
+        {% endif %}
+
+        <h5>{{ mechprofile.review_set.count }} reviews</h5>
+        <h5>{{ mechprofile.average_rating | floatformat }} average rating</h5>
     </div>
-    {% endfor %}
-</div>
-{% else %}
-    <p>No mech are available.</p>
-{% endif %}
+    {% empty %}
+
+
+    <p>No  mechanic yetf.</p>
+{% endfor %}
+    </div>
 
 {% endblock %}
 

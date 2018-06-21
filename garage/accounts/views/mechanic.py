@@ -14,11 +14,16 @@ import  datetime
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
 from ..suggestions import update_clusters
+from ..filters import VehicleFilter
 
 def mechdashboard(request):
     items = MechProfile.objects.all()
     return render(request,'accounts/mechanic/mechdashboard.html',context={'items':items})
 
+def search(request):
+    user_list = MechProfile.objects.all()
+    user_filter = VehicleFilter(request.GET, queryset=user_list)
+    return render(request, 'accounts/mechanic/interior_list.html', {'filter': user_filter})
 
 class MechanicSignUpView(CreateView):
     model = User
@@ -122,7 +127,7 @@ class carSpalist(ListView):
     def get_queryset(self):
         return MechProfile.objects.filter(car_spa=True)
 
-@method_decorator([login_required,mechanic_required], name='dispatch')
+@method_decorator([login_required,customer_required], name='dispatch')
 class MechListView(ListView):
     model = MechProfile
     # ordering = ('user_name', )

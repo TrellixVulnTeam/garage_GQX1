@@ -5,14 +5,15 @@
 {% endblock %}
 
 {% block content %}
+{% include 'accounts/customer/_header.html'  %}
 {% if latest_review_list %}
 <div class="row">
     {% for review in latest_review_list %}
     <div class="col-xs-6 col-lg-4">
-
+        <h4><a href="">
         {{ review.mechprofile.name }}
-
-        <h6>Rated {{ review.rating }} of 5 by {{ review.user_name }}</a></h6>
+        </a></h4>
+        <h6>Rated {{ review.rating }} of 5 by <a href="{% url 'customer:user_review_list' review.user_name %}" >{{ review.user_name }}</a></h6>
         <p>{{ review.comment }}</p>
     </div>
     {% endfor %}
