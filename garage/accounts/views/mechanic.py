@@ -8,22 +8,22 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from ..decorators import mechanic_required,customer_required
 from django.urls import reverse_lazy
-
+from django.db.models import Q
 from ..forms import ReviewForm
 import  datetime
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
 from ..suggestions import update_clusters
-from ..filters import VehicleFilter
+
 
 def mechdashboard(request):
     items = MechProfile.objects.all()
     return render(request,'accounts/mechanic/mechdashboard.html',context={'items':items})
-
-def search(request):
-    user_list = MechProfile.objects.all()
-    user_filter = VehicleFilter(request.GET, queryset=user_list)
-    return render(request, 'accounts/mechanic/interior_list.html', {'filter': user_filter})
+#
+# def search(request):
+#     user_list = MechProfile.objects.all()
+#     user_filter = VehicleFilter(request.GET, queryset=user_list)
+#     return render(request, 'accounts/mechanic/interior_list.html', {'filter': user_filter})
 
 class MechanicSignUpView(CreateView):
     model = User
@@ -134,10 +134,17 @@ class MechListView(ListView):
     context_object_name = 'mechprofile'
     template_name = 'accounts/mechanic/mech_list.html'
 
-    def get_queryset(self):
-        queryset = self.request.user.mechprofile\
-        .select_related('name')
-        return queryset
+    # def get_queryset(self):
+    #     queryset_list=MechProfile.objects.all()
+    #     query=self.get("q")
+    #     if query:
+    #             queryset_list = queryset_list.filter(
+    #                     Q(name__icontains=query)|
+    #                     Q(garage_name__icontains=query)|
+    #                     Q(user__name__icontains=query) |
+    #                     Q(county__icontains=query)
+    #                     ).distinct()
+    #     return queryset_list
 
 @method_decorator([login_required,mechanic_required], name='dispatch')
 class ClientListView(ListView):
@@ -156,7 +163,7 @@ class ClientDeleteView(DeleteView):
     model = ClientRepairs
     context_object_name = 'client'
     template_name = 'accounts/mechanic/client_repair_delete_form.html'
-    success_url = reverse_lazy('mechanic:client_delete')
+    #success_url = reverse_lazy('mechanic:client_delete')
 
     def delete(self, request, *args, **kwargs):
         profile = self.get_object()
@@ -164,11 +171,9 @@ class ClientDeleteView(DeleteView):
         return super().delete(request, *args, **kwargs)
 
 
+    def get_success_url(self):
+        return reverse('mechanic:client_list')
 
-
-
-    # def get_queryset(self):
-    #     return self.request.user.client
 
 @method_decorator([login_required,mechanic_required], name='dispatch')
 class ClientCreateView(CreateView):
@@ -200,10 +205,16 @@ class ClientUpdateView(UpdateView):
         client.owner=self.request.user
         client.save()
         messages.success(self.request,'ClientRepair with success')
-        return redirect('mechanic:client_update')
+        return redirect('mechanic:client_update',client.pk)
 
     def get_success_url(self):
         return reverse('mechanic:client_update',kwargs={'pk':self.object.pk})
+
+
+class ProfileDetailView(DetailView):
+    model = MechProfile
+    context_object_name = 'profile'
+    template_name = 'accounts/mechanic/profiledetail.html'
 
 
 # @method_decorator([login_required,customer_required], name='dispatch')

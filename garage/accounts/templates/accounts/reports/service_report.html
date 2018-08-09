@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% include 'accounts/customer/_header.html'  %}
+
+
+
+
+<h1 align="center">Reports</h1>
+<div class="col-sm-12">
+    <div class="card">
+    <div class="card-header"><b>Vehicles</b></div>
+        <div class="card-body">
+            <a class="nav-link" href="{% url 'reports:vehicle_list' %}">1.Vehicles Report</a>
+    <a class="nav-link" href="{% url 'reports:vehicle_list' %}">2.Vehicle  Issue Report </a>
+
+        </div>
+         <div class="card-footer"><b> Contact</b></div>
+         <div class="card-body">
+             <a class="nav-link" href="{% url 'reports:vehicle_list' %}">Contact Report</a>
+
+         </div>
+
+  </div>
+
+</div>
+
+
+
+
+
+  <!--<ul>-->
+  <!--{% for user in filter.qs %}-->
+    <!--<li>{{ user.license_plate }} - {{ user.license_plate }}</li>-->
+       <!--<li>{{ user.name }} - {{ user.name }}</li>-->
+  <!--{% endfor %}-->
+  <!--</ul>-->
+{% endblock %}

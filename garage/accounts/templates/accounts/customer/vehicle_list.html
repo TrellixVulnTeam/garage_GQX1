@@ -1,78 +1,106 @@
 {% extends 'base.html' %}
 {% load widget_tweaks %}
+{% load bootstrap %}
 
 {% block content %}
-<h2>Manage my Cars</h2>
+{% include 'accounts/customer/_header.html'  %}
+<h2>Vehicle List</h2>
 
-<form method="get">
-    <div class="well">
-      <h4 style="margin-top: 0">Filter</h4>
-      <div class="row">
-        <div class="form-group col-sm-4 col-md-3">
-          {{ filter.form.name.label_tag }}
-          {% render_field filter.form.name class="form-control" %}
-        </div>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a  href="{% url 'customer:vehicle_list' %}">Vehicles</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Vehicles list</li>
+    </ol>
+  </nav>
 
-        <div class="form-group col-sm-8 col-md-6">
-          {{ filter.form.groups.label_tag }}
-          <div>
-            {% for choice in filter.form.groups %}
-              <label class="checkbox-inline">
-                {{ choice.tag }} {{ choice.choice_label }}
-              </label>
-            {% endfor %}
-          </div>
-        </div>
-      </div>
-      <button type="submit" class="btn btn-primary">
-        <span class="glyphicon glyphicon-search"></span> Search
-      </button>
-    </div>
-  </form>
 
-{% for field in form %}
-    <div class="form-group">
-        {{ field.label_tag }}
-        {% render_field field class="form-control" %}
-        {% if field.help_text %}
-            <small class="form-text text-muted">
-               {{ field.help_text }}
-            </small>
-        {% endif %}
-    </div>
-{% endfor %}
-<a href="{% url 'customer:vehicle_export' %}" class="btn btn-primary mb-3" role="button">export</a>
-  <a href="{% url 'customer:vehicle_add' %}" class="btn btn-primary mb-3" role="button">Add New Car</a>
+
+
+<!--<a href="{% url 'customer:vehicle_export' %}" class="btn btn-primary mb-3" role="button">export</a>-->
+  <a href="{% url 'customer:vehicle_add' %}" class="btn btn-primary mb-3 float-right" ><i class="fa fa-plus"></i>  Add New Car</a>
+
+
+ <!--{% if is_paginated %}-->
+  <!--<ul class="pagination">-->
+    <!--{% if page_obj.has_previous %}-->
+      <!--<li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>-->
+    <!--{% else %}-->
+      <!--<li class="disabled"><span>&laquo;</span></li>-->
+    <!--{% endif %}-->
+    <!--{% for i in paginator.page_range %}-->
+      <!--{% if page_obj.number == i %}-->
+        <!--<li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>-->
+      <!--{% else %}-->
+        <!--<li><a href="?page={{ i }}">{{ i }}</a></li>-->
+      <!--{% endif %}-->
+    <!--{% endfor %}-->
+    <!--{% if page_obj.has_next %}-->
+      <!--<li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>-->
+    <!--{% else %}-->
+      <!--<li class="disabled"><span>&raquo;</span></li>-->
+    <!--{% endif %}-->
+  <!--</ul>-->
+<!--{% endif %}-->
+<div class="row">
+  <div class="col-sm-9">
 <div class="card">
     <table class="table mb-0">
       <thead>
         <tr>
           <th>Image</th>
-          <th>Number Plate</th>
-          <th>Driver</th>
+           <th>Status</th>
+          <th>Ownership</th>
+
           <th>Update</th>
           <th>VehicleDetail</th>
         </tr>
       </thead>
       <tbody>
-        {% for vehicle in vehicles %}
+        {% for vehicle in vehicles.qs %}
           <tr>
-            <td class="align-middle">{{ vehicle.name }}</td>
-            <td class="align-middle">{{vehicle.car_model }}</td>
-            <td class="align-middle">{{vehicle.car_make }} questions</td>
-            <td><a href="{% url 'customer:vehicle_change' vehicle.pk %}">{{ vehicle.car_model}}</a></td>
-            <td><a href="{% url 'customer:vehicle_detail' vehicle.pk %}">{{ vehicle.name }}</a></td>
+            <td class="align-middle">
+              {% if vehicle.image %}
+         <img src='{{ vehicle.image.url }}' class='img-responsive'  width="150px" height="150px"  /><h6>{{vehicle.vehicle_name}}</h6>
+        {% endif %}
+
+            </td>
+
+            <td class="align-middle">
+
+                        {% ifequal vehicle.status 'Active' %}
+              <span class="badge badge-primary">Active</span>
+          {% endifequal %}
+                        {% ifequal vehicle.status 'Inactive' %}
+              <span class="badge badge-danger">Inactive</span>
+          {% endifequal %}
+            </td>
+            <td class="align-middle">{{vehicle.ownership }} </td>
+            <td class="align-middle"> <button type="button" class="btn btn-outline-info"><a href="{% url 'customer:vehicle_change' vehicle.pk %}">Update</a></button></td>
+               <td class="align-middle"> <button type="button" class="btn btn-outline-success"><a href="{% url 'customer:vehicle_detail' vehicle.pk %}">More Detail</a></button></td>
+
            <!--&lt;!&ndash;<td class="text-right">&ndash;&gt;-->
               <!--<a href="" class="btn btn-primary">Start quiz</a>-->
             <!--</td>-->
-          </tr>s
+          </tr>
         {% empty %}
           <tr>
-            <td class="bg-light text-center font-italic" colspan="4">No quiz matching your interests right now.</td>
+            <td class="bg-light text-center font-italic" colspan="4">No car yet.</td>
           </tr>
         {% endfor %}
       </tbody>
     </table>
+
+</div>
+  </div>
+
+    <div class="col-sm-3">
+<h3><i class="fa fa-search"></i>Search</h3>
+        <form method="GET">
+  {{vehicles.form|bootstrap }}
+  <button type="submit" class="btn btn-primary">Search</button>
+</form>
+    </div>
+
 
   {% if is_paginated %}
   <ul class="pagination">
@@ -95,8 +123,9 @@
     {% endif %}
   </ul>
 {% endif %}
+</div>
 
-  </div>
+
 
 
 

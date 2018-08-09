@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block title %}E-garage{% endblock %}</title>
     <link rel="icon" href="{% static 'img/garagelogo.jpg' %}">
-
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
 
     <link href="https://fonts.googleapis.com/css?family=Clicker+Script" rel="stylesheet">
@@ -18,9 +20,9 @@
        <link rel="stylesheet" type="text/css" href="{% static 'css/cards-gallery.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/app.css' %}">
     {% if user.is_authenticated and user.is_mechanic %}
-      <link rel="stylesheet" type="text/css" href="{% static 'css/teachers.css' %}">
+      <link rel="stylesheet" type="text/css" href="{% static 'css/customer.css' %}">
     {% else %}
-      <link rel="stylesheet" type="text/css" href="{% static 'css/students.css' %}">
+      <link rel="stylesheet" type="text/css" href="{% static 'css/mechanic.css' %}">
     {% endif %}
   </head>
   <body>
@@ -73,8 +75,74 @@
      </div>
       </div>
     </div>
-         <div class="jumbotron text-center" style="margin-bottom:0">
-  <p>Footer</p>
+
+
+ <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+<div class="footer-bottom-area bg-dark-light section-padding-sm">
+                <div class="container">
+                    <div class="row widgets footer-widgets">
+
+                        <div class="col-lg-3 col-md-6 col-12">
+                            <div class="single-widget widget-about">
+                                <h5 class="widget-title">About Us</h5>
+                                <img src="images/others/about-widget-image.jpg" alt="about widget image">
+                                <p>We are a team of designers and developers that create high quality <a href="www.dkstudio.in">Readmore...</a></p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 col-12">
+                            <div class="single-widget widget-quick-links">
+                                <h5 class="widget-title">My Account</h5>
+                                <ul>
+                                    <li><a href="#">Sitemap</a></li>
+                                    <li><a href="#">Privacy Policy</a></li>
+                                    <li><a href="#">Your Account</a></li>
+                                    <li><a href="#">Advanced Search</a></li>
+                                    <li><a href="#">Contact Us</a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 col-12">
+                            <div class="single-widget widget-quick-links">
+                                <h5 class="widget-title">Customer Service</h5>
+                                <ul>
+                                    <li><a href="#">Shipping Policy</a></li>
+                                    <li><a href="#">Compensation First</a></li>
+                                    <li><a href="#">My Account</a></li>
+                                    <li><a href="#">Return Policy</a></li>
+                                    <li><a href="#">Contact Us</a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 col-12">
+                            <div class="single-widget widget-contact">
+                                <h5 class="widget-title">Contact Us</h5>
+                                <ul>
+                                    <li class="address">
+                                        <span class="icon"><i class="fa fa-map-marker"></i></span>
+                                        <p>Address : No 100 Baria Sreet 100/2  Jaipur City, IN.</p>
+                                    </li>
+                                    <li class="phone">
+                                        <span class="icon"><i class="fa fa-phone"></i></span>
+                                        <p><a href="#">+91 7568 54 3012</a></p>
+                                    </li>
+                                    <li class="fax">
+                                        <span class="icon"><i class="fa fa-fax"></i></span>
+                                        <p><a href="#">+91 7568 54 3012</a></p>
+                                    </li>
+                                    <li class="email">
+                                        <span class="icon"><i class="fa fa-envelope-o"></i></span>
+                                        <p><a href="#">dkstudioin@gmail.com</a></p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
 </div>
 
      <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>  <!-- JQUERY HERE -->

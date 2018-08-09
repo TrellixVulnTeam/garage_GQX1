@@ -1,9 +1,16 @@
 {% extends 'base.html' %}
 
 {% load crispy_forms_tags crispy_forms_filters %}
-
 {% block content %}
+{% include 'accounts/customer/_header.html' with active='MyCars' %}
 
+
+ <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'customer:repair_list' %}">Issue_list</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Update Issue</li>
+    </ol>
+  </nav>
   <h2 class="mb-3">{{ question.txt }}</h2>
   <form method="post" novalidate>
     {% csrf_token %}

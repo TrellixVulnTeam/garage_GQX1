@@ -46,8 +46,11 @@ INSTALLED_APPS = [
     'crispy_forms',
     'multiselectfield',
     'bootstrap3',
-     "pinax.badges",
+    "pinax.badges",
     'import_export',
+    'django_filters',
+    'bootstrapform',
+
 
 ]
 IMPORT_EXPORT_USE_TRANSACTIONS = True

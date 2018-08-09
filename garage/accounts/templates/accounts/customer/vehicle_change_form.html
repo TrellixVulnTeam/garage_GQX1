@@ -1,28 +1,23 @@
 {% extends 'base.html' %}
 
 {% load crispy_forms_tags crispy_forms_filters %}
-
 {% block content %}
+{% include 'accounts/customer/_header.html' with active='MyCars' %}
 
+
+ <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'customer:repair_list' %}">Issue_list</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Update Issue</li>
+    </ol>
+  </nav>
   <h2 class="mb-3">{{ question.txt }}</h2>
-  <form method="post" enctype="multipart/form-data" novalidate>
+  <form method="post" novalidate>
     {% csrf_token %}
     {{ formset.management_form }}
     {{ form|crispy }}
     <div class="card mb-3{% if formset.errors %} border-danger{% endif %}">
-      <div class="card-header">
-        <div class="row">
-          <div class="col-8">
-            <strong>Answers</strong>
-          </div>
-          <div class="col-2">
-            <strong>Correct?</strong>
-          </div>
-          <div class="col-2">
-            <strong>Delete?</strong>
-          </div>
-        </div>
-      </div>
+
       {% for error in formset.non_form_errors %}
         <div class="card-body bg-danger border-danger text-white py-2">{{ error }}</div>
       {% endfor %}
@@ -48,11 +43,9 @@
         {% endfor %}
       </div>
     </div>
-    <p>
-      <small class="form-text text-muted">Your question may have at least <strong>2</strong> answers and maximum <strong>10</strong> answers. Select at least one correct answer.</small>
-    </p>
+
     <button type="submit" class="btn btn-success">Save changes</button>
-     <a href="{% url 'customer:vehicle_delete'  vehicles.pk %}" class="btn btn-danger float-right">Delete</a>
+      <a href="" class="btn btn-danger float-right">Delete</a>
 
   </form>
 {% endblock %}

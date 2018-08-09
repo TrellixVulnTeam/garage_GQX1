@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% load bootstrap %}
+{% block content %}
+{% include 'accounts/customer/_header.html'  %}
+<h2>Vehicle List</h2>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a  href="{% url 'dashboard:contact_list' %}">Contact</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Contact list</li>
+    </ol>
+  </nav>
+
+<!--<a href="{% url 'customer:vehicle_export' %}" class="btn btn-primary mb-3" role="button">export</a>-->
+  <a href="{% url 'dashboard:contact_create' %}" class="btn btn-primary mb-3 float-right" ><i class="fa fa-plus"></i>  Add Contact</a>
+
+<div class="row">
+  <div class="col-sm-10">
+<div class="card">
+    <table class="table mb-0">
+      <thead>
+        <tr>
+          <th>Name </th>
+          <th>Details</th>
+          <th>Group</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        {% for contact in contact.qs %}
+          <tr>
+            <td><a href="{% url 'dashboard:contact_detail' contact.pk %}">{{contact.first_name}} {{contact.last_name}} </a></td>
+            <td class="align-middle">0{{contact.phone_number}}</td>
+            <td class="align-middle"> {% ifequal contact.group 'mechanic' %}
+              <span class="badge badge-primary">Mechanic</span>
+          {% endifequal %}
+                        {% ifequal contact.group 'driver' %}
+              <span class="badge badge-danger">Driver</span>
+          {% endifequal %}</td>
+           <!--&lt;!&ndash;<td class="text-right">&ndash;&gt;-->
+              <!--<a href="" class="btn btn-primary">Start quiz</a>-->
+            <!--</td>-->
+          </tr>
+        {% empty %}
+          <tr>
+            <td class="bg-light text-center font-italic" colspan="4">No contact yet.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    {% if is_paginated %}
+  <ul class="pagination">
+    {% if page_obj.has_previous %}
+      <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in paginator.page_range %}
+      {% if page_obj.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+      <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+
+</div>
+  </div>
+     <div class="col-sm-2">
+<h3><i class="fa fa-search"></i>Search</h3>
+        <form method="GET">
+  {{contact.form|bootstrap }}
+  <button type="submit" class="btn btn-primary">Search</button>
+</form>
+    </div>
+
+
+
+  </div>
+
+
+
+{% endblock %}
+
+

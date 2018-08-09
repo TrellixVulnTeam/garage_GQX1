@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{repair.name }}
+{% endblock %}
+
+{% block content %}
+{% include 'accounts/customer/_header.html' with active='MyCars' %}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a  href="{% url 'customer:repair_list' %}">Vehicle Issue</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Issue Detail</li>
+    </ol>
+  </nav>
+<div class="container-fluid">
+    <div class="row">
+ <a href="{% url 'customer:vehicle_add' %}" class="btn btn-primary mb-3 float-right" ><i class="fa fa-edit"></i>  Edit Car</a>
+ <a href="{% url 'customer:vehicle_add' %}" class="btn btn-danger mb-3 float-right" ><i class="fa fa-delete"></i> Delete</a>
+</div>
+    <div class="row">
+        <div class="col-sm-6" >
+            <p><b>Vehicle Name:</b> {{repair.vehicle}}</p>
+             <p><b>Mileage:</b> {{repair.mileage}}</p>
+             <p><b>Summary:</b> {{repair.summary}}</p>
+             <p><b>Created On:</b> {{repair.date}}</p>
+             <p><b>Car Name:</b>{{vehicle.image1}}</p>
+        </div>
+         <div class="col-sm-3">
+             <p>Issue Description</p>
+             <p>{{repair.description}}</p>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+{% endblock %}

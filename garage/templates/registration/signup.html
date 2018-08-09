@@ -1,8 +1,20 @@
-{% extends 'base.html' %}
+{% extends 'base1.html' %}
 
 {% block content %}
+<div class="inner-wrapper">
+<div class="row">
+          <div class="col-sm-4">
   <h2>Sign up for a free account</h2>
   <p class="lead">Select below the type of account you want to create</p>
   <a href="{% url 'customer_signup' %}" class="btn btn-student btn-lg" role="button">I'm a car owner</a>
   <a href="{% url 'mechanic_signup' %}" class="btn btn-teacher btn-lg" role="button">I'm a mechanic</a>
+            </div>
+</div>
+</div>
 {% endblock %}
+{% block footer %}
+
+  <!--<div class="jumbotron text-center" style="margin-bottom:0">-->
+  <!--<p>Footer</p>-->
+<!--</div>-->
+              {% endblock %}

@@ -3,8 +3,11 @@ from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
 from django.forms.utils import ValidationError
 from django.forms import ModelForm, Textarea
-from .models import Review
-from .models import User,MechProfile
+from .models import Review,User,MechProfile
+
+
+
+
 
 class MechanicSignUpForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):

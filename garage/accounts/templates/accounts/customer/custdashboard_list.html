@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'accounts/customer/_header.html' with active='MyCars' %}
+
+<div class="container">
+  <h2>Dashboard</h2>
+
+  <div class="panel-group">
+      <div class="row">
+          <div class="col-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">Open Issues</div>
+      <div class="panel-body">
+          <h1>{{user}}</h1></div>
+
+    </div>
+      </div>
+       <div class="col-4">
+    <div class="panel panel-primary">
+      <div class="panel-heading">Cars in database</div>
+        <div class="panel-body"><h1>{{ vehicles }} </h1></div>
+    </div>
+       </div>
+           <div class="col-4">
+    <div class="panel panel-primary">
+      <div class="panel-heading">Panel with panel-primary class</div>
+      <div class="panel-body">{% for repair in mechprofile %}
+        <li>{{ repair.name }}</li>
+            {% endfor %}</div>
+    </div>
+       </div>
+
+      </div>
+      <br><br><br>
+          <div class="row">
+               <div class="col-4">
+    <div class="panel panel-info">
+      <div class="panel-heading">Panel with panel-info class</div>
+      <div class="panel-body">Panel Content</div>
+    </div>
+               </div>
+     <div class="col-4">
+    <div class="panel panel-warning">
+      <div class="panel-heading">Panel with panel-warning class</div>
+      <div class="panel-body">Panel Content</div>
+    </div>
+              </div>
+     <div class="col-4">
+    <div class="panel panel-danger">
+      <div class="panel-heading">Panel with panel-danger class</div>
+      <div class="panel-body">Panel Content</div>
+    </div>
+  </div>
+                   </div>
+
+  </div>
+</div>
+
+{% endblock %}

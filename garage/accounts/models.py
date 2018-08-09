@@ -11,30 +11,62 @@ class User(AbstractUser):
     is_customer = models.BooleanField(default=False)
     is_mechanic = models.BooleanField(default=False)
 
+#
+# class CarMake(models.Model):
+#     make=models.CharField(max_length=255)
+#
+#     def __str__(self):
+#         return self.make
 
-class CarMake(models.Model):
+
+class Make(models.Model):
     make=models.CharField(max_length=255)
 
     def __str__(self):
         return self.make
 
 class Vehicle(models.Model):
-    name=models.ForeignKey(User, on_delete=models.CASCADE,related_name='vehicles')
+    name=models.ForeignKey(User, on_delete=models.CASCADE,related_name='owner')
+    vehicle_name=models.CharField(max_length=25,help_text="Enter a name/nickname to distinguish the vehicle",unique=True)
     number_plate=models.CharField(max_length=100)
-    make=models.ForeignKey(CarMake)
+    #make=models.ForeignKey(Make)
     car_model=models.CharField(max_length=255,help_text="ex LandCruiser",blank=True)
-    type=models.CharField(max_length=255,help_text="ex Car,Lorry",blank=True)
+    type=(
+        ('Car','Car'),
+        ('Lorry','Lorry'),
+        ('MotorCycle','MotorCycle'),
+        ('ForkLift','ForkLift'),
+        ('Bus','Bus'),
+        ('Boat','Boat'),
+        ('Van','Van'),
 
-    fuel_choice=(
-        ('Petrol','Petrol'),
-        ('Diesel','Diesel'),
     )
 
-    fuel_type=models.CharField(max_length=10,choices=fuel_choice)
+    type=models.CharField(max_length=10,choices=type)
+    image=models.ImageField(blank=True,null=True,upload_to = 'media/',height_field=None)
+    image1=models.ImageField(blank=True,null=True,upload_to = 'media/',height_field=None,help_text="Add photo")
+    image2=models.ImageField(blank=True,null=True,upload_to = 'media/',height_field=None,help_text="Add photo")
+    ownership=(
+        ('Owned','Owned'),
+        ('leased','leased'),
+        ('Rented','Rented'),
+
+    )
+
+    ownership=models.CharField(max_length=10,choices=ownership,blank=False)
+    status=(
+        ('Sold','sold'),
+        ('Inactive','Inactive'),
+        ('Inactive','Inactive'),
+        ('Active','Active'),
+
+    )
+
+    status=models.CharField(max_length=10,choices=status)
 
     def __str__(self):
 
-        return self.number_plate
+        return self.vehicle_name
 
 
 class MechProfile(models.Model):
@@ -99,13 +131,23 @@ class Cluster(models.Model):
 
 
 class Repair(models.Model):
-   mechanic=models.ForeignKey(MechProfile)
+
+   repair_priority=(
+        ('High','high'),
+        ('medium','medium'),
+        ('low','low'),
+    )
+
+   #user=models.ForeignKey(User, on_delete=models.CASCADE,related_name="user")
    vehicle=models.ForeignKey(Vehicle)
-   mileage=models.IntegerField()
    date=models.DateTimeField(auto_now_add=True)
-   regular_maintenance=models.TextField(help_text="update on regular maintenance",max_length=1000,blank=True)
-   replace_part=models.TextField(help_text="part replaced",max_length=500,blank=True)
-   repair_type=models.TextField(help_text="type of repair done",max_length=1000,blank=True)
+   summary=models.TextField(max_length=100,blank=True,help_text="Brief overview of the issue")
+   mileage=models.IntegerField()
+   image=models.ImageField(blank=True,null=True,help_text='You can upload a photo here')
+   description=models.TextField(help_text="update on regular maintenance",max_length=1000,blank=True)
+   priority=models.CharField(max_length=10,choices=repair_priority)
+
+
 
 
 
@@ -137,43 +179,19 @@ class ClientRepairs(models.Model):
         return str(self.license_plate)
 
 
-
-# class RegularService(models.Model):
-#    periodic_choice=(
-#        ('E','Engine Oil'),
-#        ('O','Oil filter'),
-#        ('A','Air Filter'),
-#        ('B','Breake'),
-#        ('Cl','Clutch'),
-#        ('C','Coolant'),
-#
-#    )
-#
-#    other_choice=(
-#
-#        ('B','Wheel Balancing'),
-#        ('R','Wheel Rotation'),
-#        ('A','Wheel Alignment'),
-#    )
-#
-#    other_service=MultiSelectField(choices=other_choice)
-#    periodic_service=MultiSelectField(choices=periodic_choice)
+class Dashboard(models.Model):
+    repair=models.ForeignKey(Repair)
 
 
+class Contact(models.Model):
+    group_choice=(
+        ('driver','driver'),
+        ('mechanic','mechanic'),
+    )
 
-# class Painting(models.Model):
-#     painting_choices=(
-#         ('U','Undercoat Finishes'),
-#         ('B','Base Coat Paints'),
-#         ('A','Acyrlic lacquers'),
-#         ('C','Clear Coat finishes'),
-#         ('F','Full Body Painting'),
-#         ('D','Dental Removals'),
-#         ('R','Dry Dent removal on bumpers'),
-#         ('E','Exhaust pipe welding/repair'),
-#         ('W','Water leaks'),
-#     )
-#
-#     painting_issues=MultiSelectField(choices=painting_choices)
-#     other=models.TextField(max_length=3000,blank=True,help_text='other')
-#
+    first_name=models.CharField(max_length=20,blank=False)
+    last_name=models.CharField(max_length=50,blank=True)
+    phone_number=models.IntegerField(blank=False)
+    group=models.CharField(max_length=10,choices=group_choice,blank=True)
+    image=models.ImageField(blank=True,null=True)
+    file=models.FileField(blank=True,null=True)

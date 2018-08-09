@@ -2,21 +2,25 @@
 
 {% block content %}
 {% include 'accounts/customer/_header.html' with active='MyCars' %}
-<h2>Car repair history</h2>
 
-  <a href="{% url 'customer:repair_add' %}" class="btn btn-primary mb-3" role="button">Add Repair</a>
+ <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item active" aria-current="page">Issue list</li>
+    </ol>
+ </nav>
+
+  <a href="{% url 'customer:issue_add' %}" class="btn btn-primary mb-3 btn-lg" role="button">
+    <span class="glyphicon glyphicon-plus"></span> Add Issue</a>
 <div class="card">
     <table class="table mb-0">
       <thead>
         <tr>
-           <th>id</th>
-          <th>Mechanic</th>
+
           <th>Vehicle</th>
           <th>Mileage</th>
-          <th>Engine Issues</th>
-          <th>Part Replaced</th>
-          <th>Repair type</th>
-          <th>Date Created</th>
+          <th>Priority</th>
+          <th>Issue</th>
+          <th>More Detail</th>
           <th>Update</th>
           <th>Delete</th>
         </tr>
@@ -24,20 +28,18 @@
       <tbody>
         {% for repair in repair %}
           <tr>
-            <td class="align-middle">{{ repair.id }}</td>
-            <td class="align-middle">{{ repair.mechanic }}</td>
+
             <td class="align-middle">{{repair.vehicle }}</td>
             <td class="align-middle">{{repair.mileage }} </td>
-            <td class="align-middle">{{repair.regular_maintenance}}</td>
-            <td class="align-middle">{{repair.replace_part}}</td>
-            <td class="align-middle">{{repair.repair_type}}</td>
-            <td class="align-middle">{{repair.date}}</td>
+            <td class="align-middle">{{repair.priority}}</td>
+            <td class="align-middle">{{repair.summary}}<br> reported on {{repair.date}}</td>
+            <td class="align-middle"> <button type="button" class="btn btn-outline-success"><a href="{% url 'customer:repair_detail' repair.pk %}">More Detail</a></button></td>
             <td class="align-middle"><a href="{% url 'customer:repair_change' repair.pk %}">Update</a></td>
             <td class="align-middle"><a href="{% url 'customer:repair_delete' repair.pk %}">Delete</a></td>
            <!--&lt;!&ndash;<td class="text-right">&ndash;&gt;-->
               <!--<a href="" class="btn btn-primary">Start quiz</a>-->
             <!--</td>-->
-          </tr>s
+          </tr>
         {% empty %}
           <tr>
             <td class="bg-light text-center font-italic" colspan="4">No service history available.</td>

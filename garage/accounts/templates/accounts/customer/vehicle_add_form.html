@@ -8,15 +8,29 @@
 
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="">My Cars</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Add a new car</li>
+      <li class="breadcrumb-item"><a  href="{% url 'customer:vehicle_list' %}">Car list</a></li>
+      <li class="breadcrumb-item active" aria-current="page">New Car</li>
     </ol>
   </nav>
-  <h2 class="mb-3">Update Car Details</h2>
+
+<div class="row">
+  <div class="col-sm-8">
+    <h2 class="mb-3">Update Car Details</h2>
+  </div>
+  <div class="col-sm-4">
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-8">
   <form method="post" enctype="multipart/form-data" novalidate>
     {% csrf_token %}
 {{ form|crispy }}
+     <input type="image" name="image">
     <button type="submit" class="btn btn-success">Save</button>
     <a href="" class="btn btn-outline-secondary" role="button">Nevermind</a>
   </form>
+  </div>
+  </div>
 {% endblock %}

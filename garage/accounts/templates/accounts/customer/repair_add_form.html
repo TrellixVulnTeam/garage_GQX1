@@ -8,10 +8,10 @@
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="">My Cars</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Add a new car</li>
+      <li class="breadcrumb-item active" aria-current="page">Add new issue</li>
     </ol>
   </nav>
-  <h2 class="mb-3">Update Car Details</h2>
+  <h2 class="mb-3">Issue Details</h2>
   <form method="post" enctype="multipart/form-data" novalidate>
     {% csrf_token %}
     {{ form|crispy }}

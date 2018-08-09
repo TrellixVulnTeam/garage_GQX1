@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block content %}
+{% include 'accounts/customer/_header.html' with active='MyCars' %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a  href="{% url 'dashboard:contact_list' %}">Contact List</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{contact.last_name}}</li>
+    </ol>
+  </nav>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-6" style="background-color:lavender;">
+        <div class="card">
+      <div class="card-header">
+        <h2>Contact Overview</h2>
+      </div>
+        <div class="card-body">
+            <p>Full Name :{{contact.first_name}} {{contact.last_name}}</p>
+            <p>Phone Number: {{contact.phone_number}}</p>
+            <p>Email:{{vehicle.make}}</p>
+            <p>Group:  {% ifequal contact.group 'mechanic' %}
+              <span class="badge badge-primary">Mechanic</span>
+          {% endifequal %}
+                        {% ifequal contact.group 'driver' %}
+              <span class="badge badge-danger">Driver</span>
+          {% endifequal %}</p>
+            <p></p><p></p>
+
+           </div>
+    </div>
+    </div>
+
+    <div class="col-sm-3" style="background-color:lavender;">
+        <p>Photos</p>
+    </div>
+    <div class="col-sm-3" style="background-color:lavenderblush;">.col-sm-3</div>
+  </div>
+</div>
+
+{% endblock %}

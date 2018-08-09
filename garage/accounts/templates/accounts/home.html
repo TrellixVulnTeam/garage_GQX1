@@ -23,22 +23,23 @@
 
 <!--Popular Services-->
 <div class="row">
-   <div class="col">
+    <div class=" col-sm-12">
      <div class="card">
     <div class="card-header bg-danger">Popular Services</div>
     <div class="card-body">
 
       <div class="row">
-		  <td><a href="{% url 'mechanic:dent_list'%}"><span class="jss87" data-reactid="33"><img height="60%" width="60%" src="{% static 'img/car-dent.svg' %}" class="rounded"/>Dent/Scratch removal</span>
-        </a></td>
 
-         <td><a href="{% url 'mechanic:car_spa'%}"> <span class="jss87" data-reactid="33"><img class="rounded-circle" height="60%" width="60%" src="{% static 'img/complete-car-spa.svg' %}" />Complete car spa</span>
+		  <td><a href="{% url 'mechanic:car_spa'%}"> <span class="jss87" data-reactid="33"><img class="rounded-circle" height="60%" width="30%" src="{% static 'img/complete-car-spa.svg' %}" />Complete car spa</span>
 			 </a></td>
-        <td><a href="{% url 'mechanic:interior'%}"><span class="jss87" data-reactid="33"><img height="60%" width="60%" src="{% static 'img/interior-detailing.svg' %}" />Interior Detailing</span>
+        <td><a href="{% url 'mechanic:interior'%}"><span class="jss87" data-reactid="33"><img height="40%" width="40%" src="{% static 'img/interior-detailing.svg' %}" />Interior Detailing</span>
     </a></td>
-       <td><a href="{% url 'mechanic:service'%}"><span class="jss87" data-reactid="33"><img height="60%" width="60%" src="{% static 'img/general-service-car.svg' %}" />Car General Service</span>
+       <td><a href="{% url 'mechanic:service'%}"><span class="jss87" data-reactid="33"><img height="40%" width="40%" src="{% static 'img/general-service-car.svg' %}" />General Service</span>
          </a></td>
-      </div>
+		  <td><a href="{% url 'mechanic:dent_list'%}"><span class="jss87" data-reactid="33"><img height="40%" width="40%" src="{% static 'img/car-dent.svg' %}" />Dent Removal</span>
+         </a></td>
+	  </div>
+
    </div>
   </div>
 </div>
