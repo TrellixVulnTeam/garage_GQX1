@@ -59,18 +59,20 @@ urlpatterns = [
     url('client_repair/delete/(?P<pk>[0-9]+)',mechanic.ClientDeleteView.as_view(),name='client_delete'),
     url('client_repair/update/(?P<pk>[0-9]+)',mechanic.ClientUpdateView.as_view(),name='client_update'),
 
-    url('profileupdate/(?P<pk>[0-9]+)',mechanic.MechanicUpdateView.as_view(),name='profile_change'),
-    url('profiledelete/(?P<pk>[0-9]+)',mechanic.MechanicDeleteView.as_view(),name='profile_delete'),
+
+    url('Profile/Add',mechanic.ProfileCreateView.as_view(),name='profile_create'),
+    url('profileupdate/(?P<pk>[0-9]+)',mechanic.ProfileUpdateView.as_view(),name='profile_change'),
+    url('profiledelete/(?P<pk>[0-9]+)',mechanic.ProfileDeleteView.as_view(),name='profile_delete'),
+    url(r'profile/detail(?P<pk>[0-9]+)', mechanic.ProfileDetailView.as_view(), name='myprofile_detail'),
+     url('dashboard', mechanic.ProfileListView.as_view(), name='profile_list'),
+    url('dashboard', mechanic.ProfileDashboardView.as_view(), name='mechdashboard_list'),
     #url(r'^profiledetail/(?P<pk>[0-9]+)/$', mechanic.MechanicDetailView.as_view(), name='profile_detail'),
-    url('dashboard', mechanic.mechdashboard, name='mechdashboard'),
+
     url('list',mechanic.MechListView.as_view(),name='mech_list'),
     url(r'^profiledetail/(?P<mechprofile_id>[0-9]+)/$', mechanic.profile_detail, name='profile_detail'),
-    url(r'profile/detail(?P<pk>[0-9]+)', mechanic.ProfileDetailView.as_view(), name='myprofile_detail'),
-    #url(r'profile/detail(?P<pk>[0-9]+)', mechanic.ProfileListView.as_view(), name='myprofile_list'),
 
 
 
-     # url('Profile/Add',mechanic.ProfileCreateView.as_view(),name='profile_add'),
     url(r'^mechanic_review/add/(?P<mechprofile_id>[0-9]+)/$', mechanic.add_review, name='add_review'),
 ], 'accounts'), namespace='mechanic')),
 

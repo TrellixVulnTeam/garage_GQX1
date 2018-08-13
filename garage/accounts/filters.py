@@ -10,7 +10,7 @@ class MechProfileFilter(django_filters.FilterSet):
 
     class Meta:
         model = MechProfile
-        fields = ['garage_name', 'county', 'name',]
+        fields = ['name','garage_name','county','desc','town','estate','dent_removal','car_spa','interior_detailing','general_service']
 
 class RepairFilter(django_filters.FilterSet):
     class Meta:

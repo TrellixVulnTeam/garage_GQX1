@@ -77,7 +77,7 @@ class MechProfile(models.Model):
     town=models.CharField(max_length=250,help_text="ex Nairobi,Nakuru,Rongai")
     estate=models.CharField(max_length=250,help_text="ex SouthB,Bahati")
 
-    dental_removal=models.BooleanField(blank=True)
+    dent_removal=models.BooleanField(blank=True)
     car_spa=models.BooleanField(blank=True)
     interior_detailing=models.BooleanField(blank=True)
     general_service=models.BooleanField(blank=True)
@@ -151,17 +151,7 @@ class Repair(models.Model):
 
 
 
-class Price(models.Model):
-    price=models.DecimalField(max_digits=10,decimal_places=2)
-    date_set=models.DateTimeField(auto_now_add=True)
 
-class Passenger(models.Model):
-    name = models.CharField(max_length=200)
-    sex = models.CharField(max_length=200)
-    survived = models.BooleanField(blank=True)
-    age = models.FloatField()
-    ticket_class = models.PositiveSmallIntegerField()
-    embarked = models.CharField(max_length=200)
 
 
 class ClientRepairs(models.Model):

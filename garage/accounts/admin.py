@@ -18,7 +18,7 @@ class RepairAdmin(admin.ModelAdmin):
 admin.site.register(Repair,RepairAdmin)
 
 class MechAdmin(admin.ModelAdmin):
-  list_display = ('name','garage_name','county','desc','image','town','estate','dental_removal','car_spa','interior_detailing','general_service')
+  list_display = ('name','garage_name','county','desc','image','town','estate','dent_removal','car_spa','interior_detailing','general_service')
 admin.site.register(MechProfile,MechAdmin)
 
 

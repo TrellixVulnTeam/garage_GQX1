@@ -182,12 +182,12 @@ def user_recommendation_list(request):
 
     #then get a mechanic list including the previous IDS,order by rating
 
+
     mech_list=sorted(
         list(MechProfile.objects.filter(id__in=other_users_reviews_mechprofile_ids)),
         key=lambda  x: x.average_rating(),
         reverse=True
     )
-
 
     return render(
         request,

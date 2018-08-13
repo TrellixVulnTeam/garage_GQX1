@@ -13,19 +13,8 @@
         </tr>
       </thead>
       <tbody>
-        {% for profile in mechprofile %}
-          <tr>
-
-             <td class="align-middle"><img src="{{profile.image.url}}"/> </td>
-            <td><a href="{% url 'mechanic:profile_change' profile.pk %}">{{ profile.garage_name }}</a></td>
-              <!--&lt;!&ndash;<td class="text-right">&ndash;&gt;-->
-              <!--<a href="" class="btn btn-primary">Start quiz</a>-->
-            <!--</td>-->
-          </tr>s
-        {% empty %}
-          <tr>
-            <td class="bg-light text-center font-italic" colspan="4">No matching  interests right now.</td>
-          </tr>
+        {% for profile in profile %}
+         <a class="dropdown-item" href="{%  url 'mechanic:myprofile_detail'  profile.pk %}">View Profile</a>
         {% endfor %}
       </tbody>
     </table>

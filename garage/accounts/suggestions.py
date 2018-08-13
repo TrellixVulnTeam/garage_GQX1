@@ -1,8 +1,8 @@
-from .models import Review,Cluster,MechProfile
+from .models import Review,Cluster
 from django.contrib.auth import get_user_model
 User = get_user_model()
 from sklearn.cluster import KMeans
-from scipy.sparse import dok_matrix,csr_matrix
+from scipy.sparse import dok_matrix
 import numpy as np
 
 #update_clusters function performs cluster assignment in three steps

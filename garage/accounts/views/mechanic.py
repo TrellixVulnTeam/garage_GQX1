@@ -16,10 +16,11 @@ from django.http import HttpResponseRedirect
 from ..suggestions import update_clusters
 
 
-def mechdashboard(request):
-    items = MechProfile.objects.all()
-    return render(request,'accounts/mechanic/mechdashboard.html',context={'items':items})
-#
+class ProfileDashboardView(ListView):
+    model = MechProfile
+    context_object_name = 'items'
+    template_name = 'accounts/mechanic/mechprofilelist_dashboard.html'
+
 # def search(request):
 #     user_list = MechProfile.objects.all()
 #     user_filter = VehicleFilter(request.GET, queryset=user_list)
@@ -44,7 +45,7 @@ class MechanicSignUpView(CreateView):
 class ProfileCreateView(CreateView):
     model = MechProfile
     context_object_name = 'mechprofile'
-    fields = ('garage_name','county','desc','image','town','estate','dental_removal')
+    fields = ('garage_name','county','desc','image','town','estate','dent_removal','car_spa','interior_detailing','general_service')
     template_name = 'accounts/mechanic/profile_add_form.html'
 
     def form_valid(self, form):
@@ -52,13 +53,18 @@ class ProfileCreateView(CreateView):
         mechprofile.owner=self.request.user
         mechprofile.save()
         messages.success(self.request,'Profile Created with success')
-        return redirect('mechanic:mechdashboard')
+        return redirect('mechanic:mechdashboard_list')
 
+
+class ProfileListView(ListView):
+    model = MechProfile
+    context_object_name = 'items'
+    template_name = 'accounts/mechanic/profile_list.html'
 
 @method_decorator([login_required,mechanic_required],name='dispatch')
-class MechanicUpdateView(UpdateView):
+class ProfileUpdateView(UpdateView):
     model =  MechProfile
-    fields = ('garage_name','county','desc','image','town','estate','dental_removal')
+    fields = ('garage_name','county','desc','image','town','estate','dent_removal')
     context_object_name = 'mechprofile'
     template_name = 'accounts/mechanic/profile_change_form.html'
 
@@ -72,7 +78,7 @@ class MechanicUpdateView(UpdateView):
     def get_success_url(self):
         return reverse('mechanic:profile_change',kwargs={'pk':self.object.pk})
 
-class MechanicDeleteView(DeleteView):
+class ProfileDeleteView(DeleteView):
     model = MechProfile
     context_object_name = 'mechprofile'
     template_name = 'accounts/mechanic/profile_delete_form.html'
@@ -95,7 +101,7 @@ class dentlist(ListView):
 
 
     def get_queryset(self):
-        return MechProfile.objects.filter(dental_removal=True)
+        return MechProfile.objects.filter(dent_removal=True)
 
 @method_decorator([login_required,customer_required], name='dispatch')
 class interiorlist(ListView):
@@ -255,3 +261,5 @@ def add_review(request, mechprofile_id):
         return HttpResponseRedirect(reverse('mechanic:profile_detail', args=(mechprofile.id,)))
 
     return render(request, 'accounts/mechanic/profile_detail.html', {'mechprofile': mechprofile, 'form': form})
+
+
